@@ -13,6 +13,7 @@ public class PlayerControl : MonoBehaviour {
     private WireControl wire2;
     private bool isStop = true;
     private Vector2 target;
+    private SpriteRenderer body;
 
     // Use this for initialization
     void Start()
@@ -22,6 +23,7 @@ public class PlayerControl : MonoBehaviour {
 
         wire1 = transform.GetChild(0).GetComponent<WireControl>();
         wire2 = transform.GetChild(1).GetComponent<WireControl>();
+        body = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -54,11 +56,12 @@ public class PlayerControl : MonoBehaviour {
             if (direction.magnitude > 0.6)
             {
                 rb2d.MovePosition(rb2d.position + direction.normalized * speed * Time.deltaTime);
+
+                body.flipX = direction.x < 0;
             }
             else
             {
                 isStop = true;
-                hitWire = null;
             }
         }
     }

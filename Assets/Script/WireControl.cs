@@ -11,6 +11,7 @@ public class WireControl : MonoBehaviour {
     public float WireTime;
 
     public bool IsWiring { get { return line.enabled; } }
+    private GameObject Hand;
 
     private LineRenderer line;
     private int layerMask;
@@ -29,6 +30,7 @@ public class WireControl : MonoBehaviour {
         layerMask = 1 << LayerMask.NameToLayer("Hittable");
         player = transform.parent.gameObject;
         playerCtrl = player.GetComponent<PlayerControl>();
+        Hand = transform.FindChild("Hand").gameObject;
     }
 
     public void ShootWire()
@@ -37,8 +39,15 @@ public class WireControl : MonoBehaviour {
         {
             target = ComputeWireTarget();
             line.enabled = true;
+            SetHandRotation(target - player.transform.position);
             LineReset();
         }
+    }
+
+    void SetHandRotation(Vector2 v)
+    {
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        Hand.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
     }
 
     void FixedUpdate()
@@ -50,7 +59,6 @@ public class WireControl : MonoBehaviour {
                 if (playerCtrl.hitWire == this)
                 {
                     DrawWire(target);
-                    line.enabled = playerCtrl.IsMoving;
                 }
                 else
                 {
@@ -59,6 +67,7 @@ public class WireControl : MonoBehaviour {
                     if (wireCounter < 0)
                     {
                         line.enabled = false;
+                        return;
                     }
                     DrawWire((target - player.transform.position) * rate + player.transform.position);
                 }
@@ -97,6 +106,8 @@ public class WireControl : MonoBehaviour {
         line.SetPosition(0, tmp);
         line.SetPosition(1, vec);
         line.material.mainTextureScale = new Vector2((vec - tmp).magnitude, 1);
+
+        SetHandRotation(vec - tmp);
     }
 
     Vector2 ComputeScreenPosition()
