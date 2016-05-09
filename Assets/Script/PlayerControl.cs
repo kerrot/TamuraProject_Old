@@ -13,7 +13,7 @@ public class PlayerControl : MonoBehaviour {
     private WireControl wire2;
     private bool isStop = true;
     private Vector2 target;
-    private SpriteRenderer body;
+    private GameObject PlayerImage;
 
     // Use this for initialization
     void Start()
@@ -23,7 +23,7 @@ public class PlayerControl : MonoBehaviour {
 
         wire1 = transform.GetChild(0).GetComponent<WireControl>();
         wire2 = transform.GetChild(1).GetComponent<WireControl>();
-        body = GetComponent<SpriteRenderer>();
+        PlayerImage = transform.FindChild("PlayerImage").gameObject;
     }
 
     void Update()
@@ -57,7 +57,7 @@ public class PlayerControl : MonoBehaviour {
             {
                 rb2d.MovePosition(rb2d.position + direction.normalized * speed * Time.deltaTime);
 
-                body.flipX = direction.x < 0;
+                PlayerImage.transform.localScale = new Vector3((direction.x > 0 ? -1 : 1), 1, 1); 
             }
             else
             {
