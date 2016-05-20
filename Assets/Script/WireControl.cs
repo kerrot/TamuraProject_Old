@@ -11,19 +11,20 @@ public class WireControl : MonoBehaviour {
     public float WireTime;
 
     public bool IsWiring { get { return line.enabled; } }
+    public GameObject WireDestination { get { return WireTarget; } }
+
     private GameObject Hand;
+    private GameObject WireTarget;
 
     private LineRenderer line;
     private int layerMask;
 
     private bool isReached = false;
-    private bool isHit = false;
-    private float wireCounter = 0;
     private GameObject player;
     private PlayerControl playerCtrl;
-    private Vector3 target;
 
-    // Use this for initialization
+    private Vector3 wireStep;
+
     void Start () {
         line = GetComponent<LineRenderer>();
         line.enabled = false;
@@ -31,16 +32,16 @@ public class WireControl : MonoBehaviour {
         player = transform.parent.gameObject;
         playerCtrl = player.GetComponent<PlayerControl>();
         Hand = transform.FindChild("Hand").gameObject;
+        WireTarget = transform.FindChild("WireTarget").gameObject;
     }
 
     public void ShootWire()
     {
         if (!line.enabled)
         {
-            target = ComputeWireTarget();
-            line.enabled = true;
-            SetHandRotation(target - player.transform.position);
             LineReset();
+            wireStep = ComputeScreenPosition().normalized;
+            line.enabled = true;
         }
     }
 
@@ -56,58 +57,50 @@ public class WireControl : MonoBehaviour {
         {
             if (isReached)
             {
-                if (playerCtrl.hitWire == this)
+                if (playerCtrl.hitWire != this)
                 {
-                    DrawWire(target);
-                }
-                else
-                {
-                    wireCounter -= Time.deltaTime;
-                    float rate = wireCounter / WireTime;
-                    if (wireCounter < 0)
+                    Vector3 distance = WireTarget.transform.position - transform.position;
+                    float step = Time.deltaTime / WireTime * WireMaxLength;
+                    if (distance.magnitude <= step)
                     {
                         line.enabled = false;
                         return;
                     }
-                    DrawWire((target - player.transform.position) * rate + player.transform.position);
+                    WireTarget.transform.position -= distance.normalized * Time.deltaTime / WireTime * WireMaxLength;
                 }
             }
             else
             {
-                wireCounter += Time.deltaTime;
-                float rate = wireCounter / WireTime;
-                if (wireCounter > WireTime)
+                WireTarget.transform.position += wireStep * Time.deltaTime / WireTime * WireMaxLength;
+                if (WireHitSomething())
                 {
-                    rate = 1;
-                    wireCounter = WireTime;
                     isReached = true;
-                    if (isHit)
-                    {
-                        playerCtrl.SetTarget(target);
-                        playerCtrl.hitWire = this;
-                    }
                 }
-                DrawWire((target - player.transform.position) * rate + player.transform.position);
+                else if ((WireTarget.transform.position - transform.position).magnitude >= WireMaxLength)
+                {
+                    isReached = true;
+                }
             }
+
+            DrawWire();
         }
     }
 
     void LineReset()
     {
-        line.SetPosition(0, Vector3.zero);
-        line.SetPosition(1, Vector3.zero);
-        wireCounter = 0;
+        WireTarget.transform.parent = transform;
+        WireTarget.transform.localPosition = new Vector3();
         isReached = false;
     }
 
-    void DrawWire(Vector2 vec)
+    void DrawWire()
     {
-        Vector2 tmp = player.transform.position;
-        line.SetPosition(0, tmp);
-        line.SetPosition(1, vec);
-        line.material.mainTextureScale = new Vector2((vec - tmp).magnitude, 1);
+        Vector2 tmp = (Vector2)(WireTarget.transform.position - player.transform.position);
+        line.SetPosition(0, player.transform.position);
+        line.SetPosition(1, WireTarget.transform.position);
+        line.material.mainTextureScale = new Vector2(tmp.magnitude, 1);
 
-        SetHandRotation(vec - tmp);
+        SetHandRotation(tmp);
     }
 
     Vector2 ComputeScreenPosition()
@@ -120,23 +113,51 @@ public class WireControl : MonoBehaviour {
         return new Vector2(l, w);
     }
 
-    Vector3 ComputeWireTarget()
-    {
-        Vector2 direction = ComputeScreenPosition();
-        Vector2 tmpTarget;
-        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, WireMaxLength, layerMask);
+//     Vector3 ComputeWireTarget()
+//     {
+//         Vector2 direction = ComputeScreenPosition();
+//         Vector2 tmpTarget;
+//         RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, WireMaxLength, layerMask);
+// 
+//         if (hit.collider != null)
+//         {
+// 
+//             isHit = true;
+//             tmpTarget = hit.point;
+//         }
+//         else
+//         {
+//             tmpTarget = (Vector2)player.transform.position + direction.normalized * WireMaxLength;
+//             isHit = false;
+//         }
+// 
+//         return new Vector3(tmpTarget.x, tmpTarget.y, 0);
+//     }
 
+    bool WireHitSomething()
+    {
+        Vector3 direction = WireTarget.transform.position - transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, direction.magnitude, layerMask);
         if (hit.collider != null)
         {
-            isHit = true;
-            tmpTarget = hit.point;
-        }
-        else
-        {
-            tmpTarget = (Vector2)player.transform.position + direction.normalized * WireMaxLength;
-            isHit = false;
+            if (hit.collider.gameObject.tag == "Blue")
+            {
+                WireTarget.transform.parent = hit.collider.gameObject.transform;
+                WireTarget.transform.position = hit.point;
+                playerCtrl.hitWire = this;
+            }
+            else if (hit.collider.gameObject.tag == "Orange")
+            {
+                OrangeController ctrl = hit.collider.gameObject.GetComponent<OrangeController>();
+                if (ctrl != null)
+                {
+                    ctrl.TriggerAnim();
+                }
+            }
+
+            return true;
         }
 
-        return new Vector3(tmpTarget.x, tmpTarget.y, 0);
+        return false;
     }
 }
