@@ -2,8 +2,11 @@
 using System.Collections;
 
 public class WireControl : MonoBehaviour {
-    public float WireMaxLength;
-    public float WireTime;
+
+	[SerializeField]
+	private float WireMaxLength;
+	[SerializeField]
+	private float WireTime;
 
     public bool IsWiring { get { return line.enabled; } }
     public GameObject WireDestination { get { return WireTarget; } }
