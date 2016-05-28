@@ -2,11 +2,6 @@
 using System.Collections;
 
 public class WireControl : MonoBehaviour {
-
-    public float wireX;
-    public float wireY;
-    public int offSet;
-
     public float WireMaxLength;
     public float WireTime;
 
@@ -105,12 +100,7 @@ public class WireControl : MonoBehaviour {
 
     Vector2 ComputeScreenPosition()
     {
-        Vector3 position = Input.mousePosition;
-
-        float l = wireX * ((float)(position.x - Screen.width / 2)) / ((float)(Screen.width / 2));
-        float w = wireY * ((float)(position.y - Screen.height / 2 - offSet)) / ((float)(Screen.height / 2));
-
-        return new Vector2(l, w);
+		return Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;	
     }
 
 //     Vector3 ComputeWireTarget()
