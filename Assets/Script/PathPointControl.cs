@@ -29,7 +29,10 @@ public class PathPointControl : MonoBehaviour {
     {
         if (transform.parent.gameObject.GetComponent<PathEditor>() != null)
         {
-            OnClick(gameObject);
+            if (OnClick != null)
+            {
+                OnClick(gameObject);
+            }
         }
     }
 
@@ -37,7 +40,10 @@ public class PathPointControl : MonoBehaviour {
     {
         if (transform.parent.gameObject.GetComponent<PathEditor>() != null)
         {
-            OnDelete(gameObject);
+            if (OnDelete != null)
+            {
+                OnDelete(gameObject);
+            }
         }
     }
 }
