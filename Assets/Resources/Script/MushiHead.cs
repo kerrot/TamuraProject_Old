@@ -29,6 +29,7 @@ public class MushiHead : MusiControl
     void FixedUpdate()
     {
         Vector3 step = (destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        step.z = 0;
         if (step.magnitude == 0 || (destination.transform.position - transform.position).magnitude <= step.magnitude)
         {
             transform.position = destination.transform.position;
