@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MushiHead : MonoBehaviour {
+public class MushiHead : MusiControl
+{
     [SerializeField]
     private PathEditor editor;
     [SerializeField]
     private float speed;
+	[SerializeField]
+	private MushiBody[] bodys;
+    
+    GameObject lastDestination;
 
-    GameObject destination;
-
-    void Start()
+    void Awake()
     {
         editor.OnPathLoaded += Editor_OnPathLoaded;
     }
@@ -17,12 +20,16 @@ public class MushiHead : MonoBehaviour {
     private void Editor_OnPathLoaded()
     {
         FindNearestDestination();
+		foreach (var b in bodys) 
+		{
+			b.InitDestination ();
+		}
     }
 
     void FixedUpdate()
     {
         Vector3 step = (destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
-        if ((destination.transform.position - transform.position).magnitude < step.magnitude)
+        if (step.magnitude == 0 || (destination.transform.position - transform.position).magnitude <= step.magnitude)
         {
             transform.position = destination.transform.position;
             FindNextDestination();
@@ -37,6 +44,7 @@ public class MushiHead : MonoBehaviour {
 
     void FindNearestDestination()
     {
+        lastDestination = destination;
         editor.Path.ForEach(r =>
         {
             if (destination == null)
@@ -60,8 +68,16 @@ public class MushiHead : MonoBehaviour {
         PathEditor.PathPoint point = editor.Path.Find(p => p.Base == destination);
         if (point != null && point.ConnectPoint.Count > 1)
         {
-            int index = Random.Range(0, point.ConnectPoint.Count);
-            destination = point.ConnectPoint[index].Base;
+            while (true)
+            {
+                int index = Random.Range(0, point.ConnectPoint.Count);
+                if (point.ConnectPoint[index].Base != lastDestination)
+                {
+                    lastDestination = destination;
+                    destination = point.ConnectPoint[index].Base;
+                    break;
+                }
+            }
         }
         else
         {
