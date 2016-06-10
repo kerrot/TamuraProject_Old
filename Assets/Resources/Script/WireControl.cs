@@ -55,7 +55,7 @@ public class WireControl : MonoBehaviour {
         {
             if (isReached)
             {
-                if (playerCtrl.hitWire != this)
+                if (playerCtrl.HitWire != this)
                 {
                     Vector3 distance = WireTarget.transform.position - transform.position;
                     float step = Time.deltaTime / WireTime * WireMaxLength;
@@ -130,25 +130,33 @@ public class WireControl : MonoBehaviour {
     bool WireHitSomething()
     {
         Vector3 direction = WireTarget.transform.position - transform.position;
-        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, direction.magnitude, layerMask);
-        if (hit.collider != null)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(player.transform.position, direction, direction.magnitude, layerMask);
+        if (hits.Length > 0)
         {
-            if (hit.collider.gameObject.tag == "Blue")
+            foreach (var hit in hits)
             {
-                WireTarget.transform.parent = hit.collider.gameObject.transform;
-                WireTarget.transform.position = hit.point;
-                playerCtrl.hitWire = this;
-            }
-            else if (hit.collider.gameObject.tag == "Orange")
-            {
-                OrangeController ctrl = hit.collider.gameObject.GetComponent<OrangeController>();
-                if (ctrl != null)
+                if (hit.collider.gameObject.tag == "Grabbable")
                 {
-                    ctrl.TriggerAnim();
+                    if (hit.collider.isTrigger == false ||
+                            playerCtrl.HitWire == null || 
+                            playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform)
+                    {
+                        WireTarget.transform.parent = hit.collider.gameObject.transform;
+                        WireTarget.transform.position = hit.point;
+                        playerCtrl.SetWireDestination(this);
+                        return true;
+                    }
+                }
+                else if (hit.collider.gameObject.tag == "Orange")
+                {
+                    OrangeController ctrl = hit.collider.gameObject.GetComponent<OrangeController>();
+                    if (ctrl != null)
+                    {
+                        ctrl.TriggerAnim();
+                        return true;
+                    }
                 }
             }
-
-            return true;
         }
 
         return false;
