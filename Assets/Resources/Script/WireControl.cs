@@ -137,13 +137,18 @@ public class WireControl : MonoBehaviour {
             {
                 if (hit.collider.gameObject.tag == "Grabbable")
                 {
-                    if (hit.collider.isTrigger == false ||
-                            playerCtrl.HitWire == null || 
-                            playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform)
+					bool isBlueObject = hit.collider.isTrigger == false;
+					bool isNotGrabbing = playerCtrl.HitWire == null;
+					bool isSkyBlueObject =	playerCtrl.HitWire != null && 
+											playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
+											hit.collider.bounds.Contains (transform.position) == false;
+
+					if (isBlueObject || isNotGrabbing || isSkyBlueObject)
                     {
                         WireTarget.transform.parent = hit.collider.gameObject.transform;
                         WireTarget.transform.position = hit.point;
                         playerCtrl.SetWireDestination(this);
+
                         return true;
                     }
                 }

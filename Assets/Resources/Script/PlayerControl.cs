@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour {
 
     private GameObject PlayerImage;
 
+	private Vector3 revivePos;
 
     void Start()
     {
@@ -76,12 +77,17 @@ public class PlayerControl : MonoBehaviour {
             }
         }
     }
-	void OnCollisionEnter2D(Collision2D coll){
-		if (coll.gameObject.tag == "enemy") {
-			Destroy (gameObject);
+		
+	void OnCollisionEnter2D(Collision2D coll)
+	{
+		if (coll.gameObject.tag == "enemy") 
+		{
+			transform.position = revivePos;
 		}
-
 	}
 
-			
+	public void SetRevivePos(Vector3 pos)
+	{
+		revivePos = pos;
+	}
 }
