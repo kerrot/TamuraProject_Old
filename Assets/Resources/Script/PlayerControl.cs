@@ -73,6 +73,11 @@ public class PlayerControl : MonoBehaviour {
                 {
                     rb2d.MovePosition(rb2d.position + direction.normalized * speed * Time.deltaTime);
                     PlayerImage.transform.localScale = new Vector3((direction.x > 0 ? -1 : 1), 1, 1);
+
+					float angle;
+					angle = Vector3.Angle(transform.position, direction);
+					PlayerImage.transform.rotation = Quaternion.Euler(0,0,(direction.x > 0 ? angle : 90 - angle));
+					Debug.Log (angle);
                 }
             }
         }
