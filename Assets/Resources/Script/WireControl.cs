@@ -141,8 +141,8 @@ public class WireControl : MonoBehaviour {
 					bool isNotGrabbing = playerCtrl.HitWire == null;
 					bool isSkyBlueObject =	playerCtrl.HitWire != null && 
 											playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
-											hit.collider.bounds.Contains (transform.position) == false;
-
+											hit.collider.OverlapPoint(transform.position) == false;
+                    
 					if (isBlueObject || isNotGrabbing || isSkyBlueObject)
                     {
                         WireTarget.transform.parent = hit.collider.gameObject.transform;

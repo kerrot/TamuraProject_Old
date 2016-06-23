@@ -1,49 +1,12 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
+using UnityEditor;
 
 public class PathPointControl : MonoBehaviour {
-
-    public event Action<GameObject> OnClick;
-    public event Action<GameObject> OnDelete;
-    public event Action<GameObject> OnCreate;
-
-    void Awake()
+    void OnDrawGizmos()
     {
-        if (transform.parent != null)
-        {
-            PathEditor editor = transform.parent.gameObject.GetComponent<PathEditor>();
-            if (editor != null)
-            {
-                if (OnCreate == null)
-                {
-                    editor.RegisterPoint(this);
-                }
+        Gizmos.color = Color.white;
+        Gizmos.DrawSphere(transform.position, PathEditor.DisplaySize);
 
-                OnCreate(gameObject);
-            }
-        }
-    }
-
-    void OnMouseUp()
-    {
-        if (transform.parent.gameObject.GetComponent<PathEditor>() != null)
-        {
-            if (OnClick != null)
-            {
-                OnClick(gameObject);
-            }
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (transform.parent.gameObject.GetComponent<PathEditor>() != null)
-        {
-            if (OnDelete != null)
-            {
-                OnDelete(gameObject);
-            }
-        }
+        Handles.Label(transform.position + Vector3.up * 2, transform.name);
     }
 }

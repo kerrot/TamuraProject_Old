@@ -14,28 +14,25 @@ public class MushiHead : MusiControl
 
     void Awake()
     {
-        editor.OnPathLoaded += Editor_OnPathLoaded;
-    }
-
-    private void Editor_OnPathLoaded()
-    {
         FindNearestDestination();
-		foreach (var b in bodys) 
-		{
-			b.InitDestination ();
-		}
+        transform.LookAt(destination.transform);
+
+        foreach (var b in bodys)
+        {
+            b.InitDestination();
+        }
     }
 
     void FixedUpdate()
     {
         Vector3 step = (destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
         step.z = 0;
-        if (step.magnitude == 0 || (destination.transform.position - transform.position).magnitude <= step.magnitude)
+        if (step.magnitude == 0 || Vector3.Distance(destination.transform.position, transform.position) <= step.magnitude)
         {
             transform.position = destination.transform.position;
             FindNextDestination();
 
-            transform.rotation = Quaternion.LookRotation(destination.transform.position - transform.position);
+            transform.LookAt(destination.transform);
         }
         else
         {
@@ -46,19 +43,20 @@ public class MushiHead : MusiControl
     void FindNearestDestination()
     {
         lastDestination = destination;
-        editor.Path.ForEach(r =>
+
+        editor.Paths.ForEach(p =>
         {
-            if (destination == null)
+            if (p.from != null && p.to !=null)
             {
-                destination = r.Base;
-            }
-            else
-            {
-                float distance = (r.Base.transform.position - transform.position).magnitude;
-                float ori = (destination.transform.position - transform.position).magnitude;
-                if (distance < ori)
+                float fromDistance = Vector3.Distance(p.from.transform.position, transform.position);
+                float toDistance = Vector3.Distance(p.to.transform.position, transform.position);
+
+                GameObject closer = (fromDistance > toDistance) ? p.to.gameObject : p.from.gameObject;
+
+                if (destination == null ||
+                    Vector3.Distance(closer.transform.position, transform.position) < Vector3.Distance(destination.transform.position, transform.position))
                 {
-                    destination = r.Base;
+                    destination = closer;
                 }
             }
         });
@@ -66,23 +64,27 @@ public class MushiHead : MusiControl
 
     void FindNextDestination()
     {
-        PathEditor.PathPoint point = editor.Path.Find(p => p.Base == destination);
-        if (point != null && point.ConnectPoint.Count > 1)
+        var paths = editor.Paths.FindAll(p => p.from.gameObject == destination || p.to.gameObject == destination);
+        if (paths.Count > 0)
         {
-            while (true)
+            if (paths.Count > 1)
             {
-                int index = Random.Range(0, point.ConnectPoint.Count);
-                if (point.ConnectPoint[index].Base != lastDestination)
+                while (true)
                 {
-                    lastDestination = destination;
-                    destination = point.ConnectPoint[index].Base;
-                    break;
+                    int index = Random.Range(0, paths.Count);
+                    if (paths[index].from.gameObject != lastDestination && paths[index].to.gameObject != lastDestination)
+                    {
+                        lastDestination = destination;
+                        destination = (paths[index].from.gameObject == destination) ? paths[index].to.gameObject : paths[index].from.gameObject;
+                        return;
+                    }
                 }
             }
-        }
-        else
-        {
-            FindNearestDestination();
+            else
+            {
+                lastDestination = destination;
+                destination = (paths[0].from.gameObject == destination) ? paths[0].to.gameObject : paths[0].from.gameObject;
+            }
         }
     }
 }

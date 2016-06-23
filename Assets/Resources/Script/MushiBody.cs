@@ -33,9 +33,9 @@ public class MushiBody : MusiControl
 
         destination = follow.Destination;
 
-        transform.rotation = Quaternion.LookRotation(destination.transform.position - transform.position);
+        transform.LookAt(destination.transform);
 
-		isInit = true;
+        isInit = true;
     }
 
     void FixedUpdate()
@@ -56,7 +56,7 @@ public class MushiBody : MusiControl
             
             transform.position = follow.transform.position - follow.transform.forward * distance;
 
-            transform.rotation = Quaternion.LookRotation(destination.transform.position - transform.position);
+            transform.LookAt(destination.transform);
         }
         else
         {
