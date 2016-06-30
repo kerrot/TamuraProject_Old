@@ -39,6 +39,8 @@ public class WireControl : MonoBehaviour {
         {
             LineReset();
             wireStep = ComputeScreenPosition().normalized;
+            WireTarget.transform.parent = transform;
+            WireTarget.transform.position = transform.position;
             line.enabled = true;
         }
     }
@@ -51,6 +53,11 @@ public class WireControl : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (playerCtrl.IsDead)
+        {
+            return;
+        }
+
         if (line.enabled)
         {
             if (isReached)
@@ -139,9 +146,11 @@ public class WireControl : MonoBehaviour {
                 {
 					bool isBlueObject = hit.collider.isTrigger == false;
 					bool isNotGrabbing = playerCtrl.HitWire == null;
-					bool isSkyBlueObject =	playerCtrl.HitWire != null && 
-											playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
-											hit.collider.OverlapPoint(transform.position) == false;
+                    bool inside = hit.collider.OverlapPoint(transform.position) == false;
+                    bool isSkyBlueObject = playerCtrl.HitWire != null &&
+                                            playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
+                                            inside;
+											
                     
 					if (isBlueObject || isNotGrabbing || isSkyBlueObject)
                     {
