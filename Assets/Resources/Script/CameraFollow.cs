@@ -11,6 +11,11 @@ public class CameraFollow : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+		if (player == null) 
+		{
+			player = GameObject.FindGameObjectWithTag ("Player");
+		}
+
         Vector3 pos = player.transform.position;
         pos.z = transform.position.z;
 

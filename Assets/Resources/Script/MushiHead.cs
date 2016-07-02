@@ -10,6 +10,8 @@ public class MushiHead : MusiControl
 	[SerializeField]
 	private MushiBody[] bodys;
     
+	public float Speed { get { return speed; } }
+
     GameObject lastDestination;
 
     void Awake()
@@ -19,7 +21,7 @@ public class MushiHead : MusiControl
 
         foreach (var b in bodys)
         {
-            b.InitDestination();
+			b.InitDestination(speed);
         }
     }
 

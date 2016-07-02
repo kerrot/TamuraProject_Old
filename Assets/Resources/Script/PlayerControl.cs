@@ -123,7 +123,7 @@ public class PlayerControl : MonoBehaviour {
             anim.SetTrigger("die");
             isdead = true;
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 	}
 
