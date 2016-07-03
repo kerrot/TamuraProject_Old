@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
@@ -122,8 +121,6 @@ public class PlayerControl : MonoBehaviour {
 		{
             anim.SetTrigger("die");
             isdead = true;
-
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 	}
 

@@ -7,15 +7,9 @@ public class MushiBody : MusiControl
     [SerializeField]
     private MusiControl follow;
 
-    float distance;
 	bool isInit = false;
 
 	private float speed;
-
-    void Start()
-    {
-        distance = (follow.transform.position - transform.position).magnitude;
-    }
 
 	public void InitDestination(float s)
     {
@@ -60,5 +54,10 @@ public class MushiBody : MusiControl
 		{
 			transform.position += step;
 		}
+    }
+
+    protected override void AttackedReaction()
+    {
+        follow.Attacked();
     }
 }
