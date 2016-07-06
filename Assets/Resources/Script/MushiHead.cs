@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MushiHead : MusiControl
@@ -8,8 +10,12 @@ public class MushiHead : MusiControl
     [SerializeField]
     private float speed;
 	[SerializeField]
-	private MushiBody[] bodys;
-    
+	private List<MushiBody> bodys = new List<MushiBody>();
+    [SerializeField]
+    private GameObject DieEffect;
+
+	public float Speed { get { return speed; } }
+    bool isdead = false;
     GameObject lastDestination;
 
     void Awake()
@@ -19,12 +25,17 @@ public class MushiHead : MusiControl
 
         foreach (var b in bodys)
         {
-            b.InitDestination();
+			b.InitDestination(speed);
         }
     }
 
     void FixedUpdate()
     {
+        if (isdead)
+        {
+            return;
+        }
+
         Vector3 step = (destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
         step.z = 0;
         if (step.magnitude == 0 || Vector3.Distance(destination.transform.position, transform.position) <= step.magnitude)
@@ -86,5 +97,30 @@ public class MushiHead : MusiControl
                 destination = (paths[0].from.gameObject == destination) ? paths[0].to.gameObject : paths[0].from.gameObject;
             }
         }
+    }
+
+    protected override void AttackedReaction()
+    {
+        if (!isdead)
+        {
+            if (bodys.Count > 0)
+            {
+                MushiBody b = bodys[bodys.Count - 1];
+                bodys.Remove(b);
+                DestroyObject(b.gameObject);
+            }
+            else
+            {
+                DieEffect.SetActive(true);
+                isdead = true;
+                StartCoroutine(GameClear());
+            }
+        }
+    }
+
+    IEnumerator GameClear()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("GameClear");
     }
 }

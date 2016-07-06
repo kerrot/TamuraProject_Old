@@ -2,7 +2,8 @@
 using System;
 using System.Collections;
 
-public class MusiControl : MonoBehaviour {
+[RequireComponent(typeof(Collider2D))]
+public class MusiControl : EnemyControl {
 
     public GameObject Destination { get { return destination; } }
 

@@ -39,6 +39,8 @@ public class WireControl : MonoBehaviour {
         {
             LineReset();
             wireStep = ComputeScreenPosition().normalized;
+            WireTarget.transform.parent = transform;
+            WireTarget.transform.position = transform.position;
             line.enabled = true;
         }
     }
@@ -51,6 +53,11 @@ public class WireControl : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (playerCtrl.IsDead)
+        {
+            return;
+        }
+
         if (line.enabled)
         {
             if (isReached)
@@ -106,27 +113,6 @@ public class WireControl : MonoBehaviour {
 		return Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;	
     }
 
-//     Vector3 ComputeWireTarget()
-//     {
-//         Vector2 direction = ComputeScreenPosition();
-//         Vector2 tmpTarget;
-//         RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, WireMaxLength, layerMask);
-// 
-//         if (hit.collider != null)
-//         {
-// 
-//             isHit = true;
-//             tmpTarget = hit.point;
-//         }
-//         else
-//         {
-//             tmpTarget = (Vector2)player.transform.position + direction.normalized * WireMaxLength;
-//             isHit = false;
-//         }
-// 
-//         return new Vector3(tmpTarget.x, tmpTarget.y, 0);
-//     }
-
     bool WireHitSomething()
     {
         Vector3 direction = WireTarget.transform.position - transform.position;
@@ -139,9 +125,11 @@ public class WireControl : MonoBehaviour {
                 {
 					bool isBlueObject = hit.collider.isTrigger == false;
 					bool isNotGrabbing = playerCtrl.HitWire == null;
-					bool isSkyBlueObject =	playerCtrl.HitWire != null && 
-											playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
-											hit.collider.OverlapPoint(transform.position) == false;
+                    bool inside = hit.collider.OverlapPoint(transform.position) == false;
+                    bool isSkyBlueObject = playerCtrl.HitWire != null &&
+                                            playerCtrl.HitWire.WireDestination.transform.parent != hit.collider.gameObject.transform &&
+                                            inside;
+											
                     
 					if (isBlueObject || isNotGrabbing || isSkyBlueObject)
                     {
@@ -158,6 +146,15 @@ public class WireControl : MonoBehaviour {
                     if (ctrl != null)
                     {
                         ctrl.TriggerAnim();
+                        return true;
+                    }
+                }
+                else if (hit.collider.gameObject.tag == "enemy")
+                {
+                    EnemyControl ctrl = hit.collider.gameObject.GetComponent<EnemyControl>();
+                    if (ctrl != null)
+                    {
+                        ctrl.Attacked();
                         return true;
                     }
                 }

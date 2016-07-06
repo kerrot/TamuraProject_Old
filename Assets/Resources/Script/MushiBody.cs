@@ -7,27 +7,25 @@ public class MushiBody : MusiControl
     [SerializeField]
     private MusiControl follow;
 
-    float distance;
 	bool isInit = false;
 
-    void Start()
-    {
-        distance = (follow.transform.position - transform.position).magnitude;
-    }
+	private float speed;
 
-    public void InitDestination()
+	public void InitDestination(float s)
     {
 		if (isInit) 
 		{
 			return;
 		}
 
+		speed = s;
+
 		if (follow.Destination == null) 
 		{
 			MushiBody tmp = follow as MushiBody;
 			if (tmp != null) 
 			{
-				tmp.InitDestination ();
+				tmp.InitDestination (speed);
 			}
 		}
 
@@ -45,30 +43,21 @@ public class MushiBody : MusiControl
 			return;
 		}
 
-        if (follow.Destination == destination)
-        {
-            transform.position = follow.transform.position - follow.transform.forward * distance;
-        }
-        else if ((follow.transform.position - destination.transform.position).magnitude >= distance)
-        {
-            // notice that the distance of two destinations larger than value 'distance'
-            destination = follow.Destination;
-            
-            transform.position = follow.transform.position - follow.transform.forward * distance;
+		Vector3 step = transform.forward * Time.deltaTime * speed;
+		if (Vector3.Distance (transform.position, destination.transform.position) < step.magnitude) {
+			transform.position = destination.transform.position;
+			destination = follow.Destination;
+			transform.LookAt (destination.transform);
 
-            transform.LookAt(destination.transform);
-        }
-        else
-        {
-            Vector3 step = transform.forward * Time.deltaTime;
-            float todestination = (destination.transform.position - transform.position).magnitude;
-            float tofollow = (follow.transform.position - (transform.position + step)).magnitude;
-            while (step.magnitude < todestination && tofollow > distance)
-            {
-                step += transform.forward * Time.deltaTime;
-                tofollow = (follow.transform.position - (transform.position + step)).magnitude;
-            }
-            transform.position += step;
-        }
+		} 
+		else 
+		{
+			transform.position += step;
+		}
+    }
+
+    protected override void AttackedReaction()
+    {
+        follow.Attacked();
     }
 }
