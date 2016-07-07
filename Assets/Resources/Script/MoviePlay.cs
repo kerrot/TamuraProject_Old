@@ -5,6 +5,8 @@ public class MoviePlay : MonoBehaviour {
 
 	void Start ()
 	{
-		((MovieTexture)GetComponent<Renderer>().material.mainTexture).Play();
-	}
+#if !UNITY_IOS
+        ((MovieTexture)GetComponent<Renderer>().material.mainTexture).Play();
+#endif
+    }
 }
