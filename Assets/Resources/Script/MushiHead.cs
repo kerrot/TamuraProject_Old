@@ -99,24 +99,24 @@ public class MushiHead : MusiControl
         }
     }
 
-    protected override void AttackedReaction()
-    {
-        if (!isdead)
-        {
-            if (bodys.Count > 0)
-            {
-                MushiBody b = bodys[bodys.Count - 1];
-                bodys.Remove(b);
-                DestroyObject(b.gameObject);
-            }
-            else
-            {
-                DieEffect.SetActive(true);
-                isdead = true;
-                StartCoroutine(GameClear());
-            }
-        }
-    }
+    //protected override void AttackedReaction()
+    //{
+    //    if (!isdead)
+    //    {
+    //        if (bodys.Count > 0)
+    //        {
+    //            MushiBody b = bodys[bodys.Count - 1];
+    //            bodys.Remove(b);
+    //            DestroyObject(b.gameObject);
+    //        }
+    //        else
+    //        {
+    //            DieEffect.SetActive(true);
+    //            isdead = true;
+    //            StartCoroutine(GameClear());
+    //        }
+    //    }
+    //}
 
     IEnumerator GameClear()
     {

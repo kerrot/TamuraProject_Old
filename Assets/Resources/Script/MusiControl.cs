@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
-public class MusiControl : EnemyControl {
+public class MusiControl : HittableObject {
 
     public GameObject Destination { get { return destination; } }
 

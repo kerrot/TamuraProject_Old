@@ -56,8 +56,8 @@ public class MushiBody : MusiControl
 		}
     }
 
-    protected override void AttackedReaction()
-    {
-        follow.Attacked();
-    }
+    //override protected void ()
+    //{
+    //    follow.Attacked();
+    //}
 }
