@@ -8,13 +8,13 @@ public abstract class ActBase {
 	public enum ActionType
     {
         ActDestroy,
-        ActDestroyGreen,
         ActAnimation,
         ActPlayerDie,
     }
 
     public struct ActionParam
     {
+        public GameObject self;
         public GameObject obj;
         public float param;
     }

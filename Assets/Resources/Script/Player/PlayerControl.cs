@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -25,7 +26,7 @@ public class PlayerControl : MonoBehaviour {
 
     private GameObject PlayerImage;
 
-	private RecordRevive revivePos;
+	static private Vector3 revivePos;
 
     private Animator anim;
 
@@ -41,11 +42,7 @@ public class PlayerControl : MonoBehaviour {
 
         reachedDistance = GetComponent<CircleCollider2D>().radius;
 
-        revivePos = GameObject.FindObjectOfType<RecordRevive>();
-        if (revivePos != null)
-        {
-            transform.position = revivePos.transform.position;
-        }
+        transform.position = revivePos;
     }
 
     void Update()
@@ -124,8 +121,13 @@ public class PlayerControl : MonoBehaviour {
         isdead = true;
     }
 
+    void ReTry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 	public void SetRevivePos(Vector3 pos)
 	{
-		revivePos.transform.position = pos;
+		revivePos = pos;
 	}
 }

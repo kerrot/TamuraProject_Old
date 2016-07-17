@@ -18,8 +18,10 @@ public class MushiHead : MusiControl
     bool isdead = false;
     GameObject lastDestination;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         FindNearestDestination();
         transform.LookAt(destination.transform);
 
@@ -99,24 +101,30 @@ public class MushiHead : MusiControl
         }
     }
 
-    //protected override void AttackedReaction()
-    //{
-    //    if (!isdead)
-    //    {
-    //        if (bodys.Count > 0)
-    //        {
-    //            MushiBody b = bodys[bodys.Count - 1];
-    //            bodys.Remove(b);
-    //            DestroyObject(b.gameObject);
-    //        }
-    //        else
-    //        {
-    //            DieEffect.SetActive(true);
-    //            isdead = true;
-    //            StartCoroutine(GameClear());
-    //        }
-    //    }
-    //}
+    override public bool IsHitted(WireControl wire, RaycastHit2D hit)
+    {
+        if (!isdead)
+        {
+            Action(wire, hit);
+
+            if (bodys.Count > 0)
+            {
+                MushiBody b = bodys[bodys.Count - 1];
+                bodys.Remove(b);
+                DestroyObject(b.gameObject);
+            }
+            else
+            {
+                DieEffect.SetActive(true);
+                isdead = true;
+                StartCoroutine(GameClear());
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     IEnumerator GameClear()
     {

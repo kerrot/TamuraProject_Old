@@ -56,8 +56,11 @@ public class MushiBody : MusiControl
 		}
     }
 
-    //override protected void ()
-    //{
-    //    follow.Attacked();
-    //}
+    override public bool IsHitted(WireControl wire, RaycastHit2D hit)
+    {
+        Action(wire, hit);
+        follow.IsHitted(wire, hit);
+
+        return true;
+    }
 }

@@ -7,10 +7,13 @@ public class ActPlayerDie : ActBase
 {
     public override void Action(ActionParam param)
     {
-        PlayerControl player = GameObject.FindObjectOfType<PlayerControl>();
-        if (player != null)
+        if (param.obj != null)
         {
-            player.Die();
+            PlayerControl player = param.obj.GetComponent<PlayerControl>();
+            if (player != null)
+            {
+                player.Die();
+            }
         }
     }
 }

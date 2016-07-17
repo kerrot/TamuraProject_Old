@@ -33,7 +33,7 @@ public class HittableObject : MonoBehaviour
     protected void Action(WireControl wire, RaycastHit2D hit)
     {
         param.obj = hit.collider.gameObject;
-
+        param.self = gameObject;
         actions.ForEach(a =>
         {
             ActBase act = ActBase.GetAction(a.type);
