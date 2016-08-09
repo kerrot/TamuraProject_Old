@@ -1,0 +1,356 @@
+fileFormatVersion: 2
+guid: ce8156efc649bac4d86af6ffa2857755
+timeCreated: 1469098419
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: sotaipa-tu_0
+    21300002: sotaipa-tu_1
+    21300004: sotaipa-tu_2
+    21300006: sotaipa-tu_3
+    21300008: sotaipa-tu_4
+    21300010: sotaipa-tu_5
+    21300012: sotaipa-tu_6
+    21300014: sotaipa-tu_7
+    21300016: sotaipa-tu_8
+    21300018: sotaipa-tu_9
+    21300020: sotaipa-tu_10
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: sotaipa-tu_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 534
+        width: 462
+        height: 429
+      alignment: 9
+      pivot: {x: 0.5, y: 0.044614993}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 146, y: 7.8601685}
+        - {x: 163, y: 19.860168}
+        - {x: 184, y: 40.86017}
+        - {x: 189, y: 51.86017}
+        - {x: 188, y: 59.86017}
+        - {x: 183, y: 78.86017}
+        - {x: 197, y: 110.86017}
+        - {x: 207, y: 142.86017}
+        - {x: 209, y: 151.86017}
+        - {x: 210, y: 173.86017}
+        - {x: 210, y: 218.86017}
+        - {x: 205, y: 246.86017}
+        - {x: 199, y: 265.86017}
+        - {x: 187, y: 295.86017}
+        - {x: 175, y: 319.86017}
+        - {x: 160, y: 338.86017}
+        - {x: 154, y: 346.86017}
+        - {x: 121, y: 369.86017}
+        - {x: 97, y: 382.86017}
+        - {x: 62, y: 392.86017}
+        - {x: 39, y: 397.86017}
+        - {x: 12, y: 397.86017}
+        - {x: -8, y: 395.86017}
+        - {x: -31, y: 391.86017}
+        - {x: -77, y: 380.86017}
+        - {x: -94, y: 377.86017}
+        - {x: -120, y: 359.86017}
+        - {x: -139, y: 341.86017}
+        - {x: -157, y: 322.86017}
+        - {x: -173, y: 302.86017}
+        - {x: -183, y: 288.86017}
+        - {x: -189, y: 270.86017}
+        - {x: -192, y: 250.86017}
+        - {x: -194, y: 239.86017}
+        - {x: -196, y: 223.86017}
+        - {x: -197, y: 198.86017}
+        - {x: -191, y: 156.86017}
+        - {x: -186, y: 134.86017}
+        - {x: -191, y: 133.86017}
+        - {x: -197, y: 132.86017}
+        - {x: -207, y: 121.86017}
+        - {x: -217, y: 103.86017}
+        - {x: -217, y: 70.86017}
+        - {x: -200, y: 49.86017}
+        - {x: -184, y: 35.86017}
+        - {x: -158, y: 24.860168}
+        - {x: -138, y: 28.860168}
+        - {x: -112, y: 9.860168}
+        - {x: -99, y: 1.8601685}
+        - {x: -73, y: -10.139832}
+        - {x: -50, y: -15.139832}
+        - {x: -39, y: -17.139832}
+        - {x: -12, y: -19.139832}
+        - {x: 72, y: -19.139832}
+        - {x: 81, y: -18.139832}
+        - {x: 108, y: -9.139832}
+        - {x: 136, y: 2.8601685}
+    - name: sotaipa-tu_1
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 623
+        width: 112
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: 21.5}
+        - {x: -48, y: -24.5}
+        - {x: -38, y: -31.5}
+        - {x: 51, y: -31.5}
+        - {x: 51, y: 44.5}
+        - {x: -14, y: 44.5}
+        - {x: -41, y: 40.5}
+      - - {x: 52, y: -27.5}
+        - {x: 55, y: -27.5}
+        - {x: 56, y: -26.5}
+        - {x: 56, y: -21.5}
+        - {x: 51, y: -24.5}
+    - name: sotaipa-tu_2
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 769
+        width: 124
+        height: 178
+      alignment: 9
+      pivot: {x: 0.59846795, y: 0.7449845}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.210022, y: -132.60724}
+        - {x: -1.210022, y: -126.60724}
+        - {x: 21.789978, y: -68.60724}
+        - {x: 31.789978, y: -41.60724}
+        - {x: 31.789978, y: 23.392761}
+        - {x: 13.789978, y: 32.39276}
+        - {x: -27.210022, y: 32.39276}
+        - {x: -30.210022, y: 30.392761}
+        - {x: -71.21002, y: -77.60724}
+        - {x: -71.21002, y: -132.60724}
+        - {x: -66.21002, y: -132.60724}
+        - {x: -64.21002, y: -128.60724}
+        - {x: -62.210022, y: -122.60724}
+        - {x: -27.210022, y: -132.60724}
+    - name: sotaipa-tu_3
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 583
+        width: 123
+        height: 185
+      alignment: 9
+      pivot: {x: 0.570906, y: 0.7828577}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52.221436, y: 40.171326}
+        - {x: -70.221436, y: 19.171326}
+        - {x: -70.221436, y: -136.82867}
+        - {x: 28.778564, y: -136.82867}
+        - {x: 38.778564, y: -79.828674}
+        - {x: 38.778564, y: 30.171326}
+        - {x: 6.7785645, y: 40.171326}
+    - name: sotaipa-tu_4
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 744
+        width: 112
+        height: 158
+      alignment: 9
+      pivot: {x: 0.31069735, y: 0.67017496}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 20.201904, y: 44.112366}
+        - {x: -28.798096, y: 44.112366}
+        - {x: -32.798096, y: 32.112366}
+        - {x: -32.798096, y: -65.887634}
+        - {x: -3.7980957, y: -105.887634}
+        - {x: 68.201904, y: -105.887634}
+        - {x: 68.201904, y: -69.887634}
+        - {x: 34.201904, y: 32.112366}
+    - name: sotaipa-tu_5
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 565
+        width: 133
+        height: 171
+      alignment: 9
+      pivot: {x: 0.3295054, y: 0.8366171}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -37.82422, y: 27.938477}
+        - {x: -37.82422, y: -137.06152}
+        - {x: 5.1757812, y: -142.06152}
+        - {x: 78.17578, y: -142.06152}
+        - {x: 78.17578, y: -96.06152}
+        - {x: 34.17578, y: 27.938477}
+    - name: sotaipa-tu_6
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 344
+        width: 104
+        height: 171
+      alignment: 9
+      pivot: {x: 0.48322767, y: 0.7550131}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25.255676, y: 30.892761}
+        - {x: -42.255676, y: 23.892761}
+        - {x: -42.255676, y: -122.10724}
+        - {x: -23.255676, y: -126.10724}
+        - {x: 30.744324, y: -126.10724}
+        - {x: 44.744324, y: -112.10724}
+        - {x: 44.744324, y: 16.892761}
+        - {x: 43.744324, y: 30.892761}
+    - name: sotaipa-tu_7
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 347
+        width: 108
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5323017, y: 0.7388015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22.488586, y: 36.881348}
+        - {x: -44.488586, y: 26.881348}
+        - {x: -44.488586, y: -123.11865}
+        - {x: -41.488586, y: -124.11865}
+        - {x: 36.511414, y: -124.11865}
+        - {x: 45.511414, y: -112.11865}
+        - {x: 45.511414, y: 29.881348}
+        - {x: 30.511414, y: 36.881348}
+      - - {x: -26.488586, y: -77.11865}
+        - {x: -24.488586, y: 16.881348}
+        - {x: 18.511414, y: 2.8813477}
+        - {x: 11.511414, y: -105.11865}
+    - name: sotaipa-tu_8
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 162
+        width: 98
+        height: 161
+      alignment: 9
+      pivot: {x: 0.4822014, y: 0.7058475}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25.255737, y: 34.35855}
+        - {x: -40.255737, y: 9.358551}
+        - {x: -40.255737, y: -99.64145}
+        - {x: -20.255737, y: -107.64145}
+        - {x: 34.744263, y: -107.64145}
+        - {x: 34.744263, y: 19.358551}
+        - {x: 22.744263, y: 34.35855}
+    - name: sotaipa-tu_9
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 166
+        width: 92
+        height: 160
+      alignment: 9
+      pivot: {x: 0.5189594, y: 0.72893775}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -36.744263, y: 35.369965}
+        - {x: -44.744263, y: 13.369965}
+        - {x: -44.744263, y: -105.630035}
+        - {x: -38.744263, y: -112.630035}
+        - {x: -12.744263, y: -114.630035}
+        - {x: 41.255737, y: -114.630035}
+        - {x: 41.255737, y: -7.6300354}
+        - {x: 34.255737, y: 35.369965}
+      - - {x: -23.744263, y: -93.630035}
+        - {x: -15.744263, y: -21.630035}
+        - {x: 0.2557373, y: -9.630035}
+        - {x: 14.255737, y: -91.630035}
+    - name: sotaipa-tu_10
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 175
+        width: 219
+        height: 337
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 102.5, y: -79.5}
+        - {x: 103.5, y: -65.5}
+        - {x: 99.5, y: -16.5}
+        - {x: 106.5, y: 35.5}
+        - {x: 106.5, y: 77.5}
+        - {x: 84.5, y: 142.5}
+        - {x: 45.5, y: 159.5}
+        - {x: -36.5, y: 159.5}
+        - {x: -67.5, y: 150.5}
+        - {x: -86.5, y: 139.5}
+        - {x: -105.5, y: 114.5}
+        - {x: -103.5, y: 83.5}
+        - {x: -85.5, y: -16.5}
+        - {x: -100.5, y: -49.5}
+        - {x: -106.5, y: -81.5}
+        - {x: -108.5, y: -110.5}
+        - {x: -108.5, y: -118.5}
+        - {x: -99.5, y: -129.5}
+        - {x: -86.5, y: -143.5}
+        - {x: -71.5, y: -155.5}
+        - {x: -8.5, y: -155.5}
+        - {x: 27.5, y: -153.5}
+        - {x: 44.5, y: -144.5}
+        - {x: 73.5, y: -121.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
