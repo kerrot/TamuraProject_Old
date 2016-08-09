@@ -6,15 +6,17 @@ using System.Collections;
 public class MushiHead : MusiControl
 {
     [SerializeField]
+    private float traceRadius;
+    [SerializeField]
     private PathEditor editor;
     [SerializeField]
     private float speed;
-	[SerializeField]
-	private List<MushiBody> bodys = new List<MushiBody>();
+    [SerializeField]
+    private List<MushiBody> bodys = new List<MushiBody>();
     [SerializeField]
     private GameObject DieEffect;
 
-	public float Speed { get { return speed; } }
+    public float Speed { get { return speed; } }
     bool isdead = false;
     GameObject lastDestination;
 
@@ -27,7 +29,7 @@ public class MushiHead : MusiControl
 
         foreach (var b in bodys)
         {
-			b.InitDestination(speed);
+            b.InitDestination(speed);
         }
     }
 
@@ -59,7 +61,7 @@ public class MushiHead : MusiControl
 
         editor.Paths.ForEach(p =>
         {
-            if (p.from != null && p.to !=null)
+            if (p.from != null && p.to != null)
             {
                 float fromDistance = Vector3.Distance(p.from.transform.position, transform.position);
                 float toDistance = Vector3.Distance(p.to.transform.position, transform.position);
@@ -76,6 +78,19 @@ public class MushiHead : MusiControl
     }
 
     void FindNextDestination()
+    {
+        PlayerControl player = FindObjectOfType<PlayerControl>();
+        if (player != null && Vector3.Distance(player.transform.position, transform.position) < traceRadius)
+        {
+            CloseToPlayerDestination(player.transform.position);
+        }
+        else
+        {
+            RandomDestination();
+        }
+    }
+
+    void RandomDestination()
     {
         var paths = editor.Paths.FindAll(p => p.from.gameObject == destination || p.to.gameObject == destination);
         if (paths.Count > 0)
@@ -99,6 +114,50 @@ public class MushiHead : MusiControl
                 destination = (paths[0].from.gameObject == destination) ? paths[0].to.gameObject : paths[0].from.gameObject;
             }
         }
+    }
+
+    void CloseToPlayerDestination(Vector3 playerPosition)
+    {
+        Vector3 toPlayer = playerPosition - transform.position;
+
+        List<GameObject> tmpList = GetPossibleDestination();
+        if (tmpList.Count > 0)
+        {
+            if (tmpList.Count > 1)
+            {
+                GameObject nearest = tmpList[0];
+                float angle = Vector3.Angle(toPlayer, nearest.transform.position - transform.position);
+                for (int i = 1; i < tmpList.Count; ++i)
+                {
+                    Vector3 toDestination = tmpList[i].transform.position - transform.position;
+                    float tmp = Vector3.Angle(toPlayer, toDestination);
+                    if (tmp < angle)
+                    {
+                        angle = tmp;
+                        nearest = tmpList[i];
+                    }
+                }
+                lastDestination = destination;
+                destination = nearest;
+            }
+            else
+            {
+                lastDestination = destination;
+                destination = tmpList[0];
+            }
+        }
+    }
+
+    List<GameObject> GetPossibleDestination()
+    {
+        List<GameObject> tmpList = new List<GameObject>();
+        var paths = editor.Paths.FindAll(p => p.from.gameObject == destination || p.to.gameObject == destination);
+        paths.ForEach(p =>
+        {
+            tmpList.Add((p.from.gameObject == destination) ? p.to.gameObject : p.from.gameObject);
+        });
+
+        return tmpList;
     }
 
     override public bool IsHitted(WireControl wire, RaycastHit2D hit)
