@@ -81,9 +81,8 @@ public class PlayerControl : MonoBehaviour {
         {
             hitWire = obj;
             Vector2 direction = hitWire.Target.transform.position - transform.position;
-            rb2d.velocity = direction.normalized * speed;
+            rb2d.AddForce(direction.normalized * speed);
             anim.SetBool("move", true);
-            reached = false;
         }
     }
 
@@ -96,29 +95,37 @@ public class PlayerControl : MonoBehaviour {
 
         if (hitWire != null)
         {
-            if (reached)
-            {
-                transform.position = hitWire.Target.transform.position;
-            }
-            else if (   rb2d.velocity == Vector2.zero || 
-                        Vector3.Distance(hitWire.Target.transform.position, transform.position) < reachedDistance)
-            {
-                anim.SetBool("move", false);
-                reached = true;
-            }
-            else
-            {
-                Vector2 direction = hitWire.Target.transform.position - transform.position;
-                rb2d.velocity = direction.normalized * speed;
-                PlayerImage.transform.localScale = new Vector3((direction.x > 0 ? -1 : 1), 1, 1);
-            }
+            //if (reached)
+            //{
+            //    transform.position = hitWire.Target.transform.position;
+            //}
+            //else if (   rb2d.velocity == Vector2.zero || 
+            //            Vector3.Distance(hitWire.Target.transform.position, transform.position) < reachedDistance)
+            //{
+            //    anim.SetBool("move", false);
+            //    reached = true;
+            //}
+            //else
+            //{
+            //    Vector2 direction = hitWire.Target.transform.position - transform.position;
+            //    rb2d.velocity = direction.normalized * speed;
+            //    PlayerImage.transform.localScale = new Vector3((direction.x > 0 ? -1 : 1), 1, 1);
+            //}
+
+            Vector2 direction = hitWire.Target.transform.position - transform.position;
+            rb2d.AddForce(direction.normalized * speed);
+
+            PlayerImage.transform.localScale = new Vector3((rb2d.velocity.x > 0 ? -1 : 1), 1, 1);
         }
     }
 	
     public void Die()
     {
-        anim.SetTrigger("die");
-        isdead = true;
+        if (isdead)
+        {
+            anim.SetTrigger("die");
+            isdead = true;
+        }
     }
 
     void ReTry()
