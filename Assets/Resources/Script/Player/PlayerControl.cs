@@ -18,7 +18,6 @@ public class PlayerControl : MonoBehaviour {
 
     private WireControl hitWire;
     private bool reached = false;
-    private float reachedDistance;
 
     private Rigidbody2D rb2d;       
     private WireControl wire1;
@@ -39,8 +38,6 @@ public class PlayerControl : MonoBehaviour {
         PlayerImage = transform.FindChild("PlayerImage").gameObject;
 
         anim = GetComponent<Animator>();
-
-        reachedDistance = GetComponent<CircleCollider2D>().radius;
 
         transform.position = revivePos;
     }
@@ -83,6 +80,7 @@ public class PlayerControl : MonoBehaviour {
             Vector2 direction = hitWire.Target.transform.position - transform.position;
             rb2d.AddForce(direction.normalized * speed);
             anim.SetBool("move", true);
+            reached = false;
         }
     }
 
@@ -93,25 +91,8 @@ public class PlayerControl : MonoBehaviour {
             return;
         }
 
-        if (hitWire != null)
+        if (hitWire != null && !reached)
         {
-            //if (reached)
-            //{
-            //    transform.position = hitWire.Target.transform.position;
-            //}
-            //else if (   rb2d.velocity == Vector2.zero || 
-            //            Vector3.Distance(hitWire.Target.transform.position, transform.position) < reachedDistance)
-            //{
-            //    anim.SetBool("move", false);
-            //    reached = true;
-            //}
-            //else
-            //{
-            //    Vector2 direction = hitWire.Target.transform.position - transform.position;
-            //    rb2d.velocity = direction.normalized * speed;
-            //    PlayerImage.transform.localScale = new Vector3((direction.x > 0 ? -1 : 1), 1, 1);
-            //}
-
             Vector2 direction = hitWire.Target.transform.position - transform.position;
             rb2d.AddForce(direction.normalized * speed);
 
@@ -121,10 +102,58 @@ public class PlayerControl : MonoBehaviour {
 	
     public void Die()
     {
-        if (isdead)
+        if (!isdead)
         {
             anim.SetTrigger("die");
             isdead = true;
+        }
+    }
+
+    void GrabWall(GameObject wall, Vector2 point)
+    {
+        anim.SetBool("move", false);
+        reached = true;
+        rb2d.velocity = Vector2.zero;
+        if (hitWire == wire1)
+        {
+            hitWire = wire2;
+            wire2.GrabWall(wall, point);
+        }
+        else if (hitWire == wire2)
+        {
+            hitWire = wire1;
+            wire1.GrabWall(wall, point);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.GetComponent<BlueObject>() != null)
+        {
+            GrabWall(coll.gameObject, coll.contacts[0].point);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        SkyblueObject obj = other.gameObject.GetComponent<SkyblueObject>();
+        if (obj != null && hitWire.Target.transform.parent == other.transform)
+        {
+            anim.SetBool("move", false);
+            reached = true;
+            rb2d.velocity = Vector2.zero;
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D coll)
+    {
+        if (!reached)
+        {
+            BlueObject wall = coll.gameObject.GetComponent<BlueObject>();
+            if (wall != null && hitWire.Target.transform.parent == coll.transform)
+            {
+                GrabWall(wall.gameObject, coll.contacts[0].point);
+            }
         }
     }
 

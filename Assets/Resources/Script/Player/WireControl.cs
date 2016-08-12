@@ -17,7 +17,6 @@ public class WireControl : MonoBehaviour {
     private LineRenderer line;
     private int layerMask;
 
-    
     private GameObject player;
     private PlayerControl playerCtrl;
 
@@ -44,11 +43,20 @@ public class WireControl : MonoBehaviour {
         {
             LineReset();
 
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 20));
             wireStep = ((Vector3)pos - WireTarget.transform.position).normalized;
 
             line.enabled = true;
+
         }
+    }
+
+    public void GrabWall(GameObject wall, Vector2 point)
+    {
+        line.enabled = true;
+        isReached = true;
+        WireTarget.transform.parent = wall.transform;
+        WireTarget.transform.position = point;
     }
 
     void SetHandRotation(Vector2 v)

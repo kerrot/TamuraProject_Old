@@ -22,7 +22,7 @@ public class ActDestroy : ActBase
 
             if (time > 0)
             {
-                obj.AddComponent<MonoBehaviour>().StartCoroutine(DestroyWaitTime(obj, time));
+                GameObject.FindObjectOfType<MonoBehaviour>().StartCoroutine(DestroyWaitTime(obj, time));
             }
             else
             {
