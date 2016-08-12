@@ -125,6 +125,12 @@ public class MushiHead : MusiControl
         {
             if (tmpList.Count > 1)
             {
+                GameObject last = tmpList.Find(g => g == lastDestination);
+                if (last != null)
+                {
+                    tmpList.Remove(last);
+                }
+
                 GameObject nearest = tmpList[0];
                 float angle = Vector3.Angle(toPlayer, nearest.transform.position - transform.position);
                 for (int i = 1; i < tmpList.Count; ++i)
