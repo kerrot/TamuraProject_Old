@@ -29,6 +29,8 @@ public class PlayerControl : MonoBehaviour {
 
     private Animator anim;
 
+    private AudioSource au;
+
     void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -38,6 +40,7 @@ public class PlayerControl : MonoBehaviour {
         PlayerImage = transform.FindChild("PlayerImage").gameObject;
 
         anim = GetComponent<Animator>();
+        au = GetComponent<AudioSource>();
 
         transform.position = revivePos;
     }
@@ -63,11 +66,13 @@ public class PlayerControl : MonoBehaviour {
             {
                 wire1.ShootWire();
                 anim.SetBool("prepare", false);
+                au.Play();
             }
             else if (!wire2.IsWiring)
             {
                 wire2.ShootWire();
                 anim.SetBool("prepare", false);
+                au.Play();
             }
         }
     }
