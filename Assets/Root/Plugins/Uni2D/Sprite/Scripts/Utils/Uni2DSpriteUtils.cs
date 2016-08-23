@@ -84,8 +84,8 @@ public static class Uni2DSpriteUtils
 	public static Vector2[ ] BuildUVs( Texture2DContainer a_rTextureContainer, Vector2[ ] a_rRenderMeshUVs, Uni2DTextureAtlas a_rTextureAtlas )
 	{
 		// UV data
-		Rect oUVRect;
-		bool bIsUVRectFlipped;
+		Rect oUVRect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
+        bool bIsUVRectFlipped = false;
 
 		// No atlas
 		if( a_rTextureAtlas == null )

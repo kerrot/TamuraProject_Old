@@ -19,6 +19,9 @@ public class PlayerControl : MonoBehaviour {
     private float speedLimit;
     [SerializeField]
     private float stopRadius;
+    [SerializeField]
+    private bool HitbyMouseDown;
+
 
     private bool isdead = false;
 
@@ -35,7 +38,6 @@ public class PlayerControl : MonoBehaviour {
 
     private Animator anim;
 
-    private AudioSource au;
     private Vector3 grabOffset;
 
     void Awake()
@@ -47,7 +49,6 @@ public class PlayerControl : MonoBehaviour {
         PlayerImage = transform.FindChild("PlayerImage").gameObject;
 
         anim = GetComponent<Animator>();
-        au = GetComponent<AudioSource>();
 
         transform.position = revivePos;
     }
@@ -59,25 +60,29 @@ public class PlayerControl : MonoBehaviour {
             return;
         }
 
-        if (!wire1.IsWiring || !wire2.IsWiring)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                anim.SetBool("prepare", true);
-            }
-        }
+        WireControl freeWire = GetFreeWire();
 
-        if (Input.GetMouseButtonUp(0))
+        if (freeWire != null)
         {
-            if (!wire1.IsWiring)
+            if (HitbyMouseDown)
             {
-                wire1.ShootWire();
-                anim.SetBool("prepare", false);
+                if (Input.GetMouseButton(0))
+                {
+                    anim.SetTrigger("fire");
+                    freeWire.ShootWire();
+                }
             }
-            else if (!wire2.IsWiring)
+            else
             {
-                wire2.ShootWire();
-                anim.SetBool("prepare", false);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    anim.SetBool("prepare", true);
+                }
+                else if (anim.GetBool("prepare") && Input.GetMouseButtonUp(0))
+                {
+                    freeWire.ShootWire();
+                    anim.SetBool("prepare", false);
+                }
             }
         }
 
@@ -85,6 +90,21 @@ public class PlayerControl : MonoBehaviour {
         {
             rb2d.velocity = rb2d.velocity.normalized * speedLimit;
         } 
+    }
+
+    WireControl GetFreeWire()
+    {
+        if (!wire1.IsWiring)
+        {
+            return wire1;
+        }
+
+        if (!wire2.IsWiring)
+        {
+            return wire2;
+        }
+
+        return null;
     }
 
     public void SetWireDestination(WireControl obj)
