@@ -8,7 +8,7 @@ public class WireControl : MonoBehaviour {
 	[SerializeField]
 	private float WireTime = 1;
 
-    public bool IsWiring { get { return line.enabled; } }
+    public bool IsWiring { get { return line.enabled || isGrabbing; } }
     public GameObject Target { get { return WireTarget; } }
 
     private GameObject Hand;
@@ -23,6 +23,8 @@ public class WireControl : MonoBehaviour {
     private Vector3 wireStep;
     private bool isReached = false;
     private float minHitDistance;
+
+    private bool isGrabbing = false;
 
     void Awake ()
     {
@@ -39,7 +41,7 @@ public class WireControl : MonoBehaviour {
 
     public void ShootWire()
     {
-        if (!line.enabled)
+        if (!line.enabled && !isGrabbing)
         {
             LineReset();
 
@@ -53,10 +55,13 @@ public class WireControl : MonoBehaviour {
 
     public void GrabWall(GameObject wall, Vector2 point)
     {
-        line.enabled = true;
-        isReached = true;
-        WireTarget.transform.parent = wall.transform;
-        WireTarget.transform.position = point;
+        if (playerCtrl.HitWire == this)
+        {
+            isGrabbing = true;
+            isReached = true;
+            WireTarget.transform.parent = wall.transform;
+            WireTarget.transform.position = point;
+        }
     }
 
     void SetHandRotation(Vector2 v)
@@ -76,7 +81,7 @@ public class WireControl : MonoBehaviour {
         {
             if (isReached)
             {
-                if (playerCtrl.HitWire != this)
+                if (playerCtrl.HitWire != this || isGrabbing)
                 {
                     Vector3 direction = WireTarget.transform.position - transform.position;
                     float step = Time.deltaTime / WireTime * WireMaxLength;
@@ -105,6 +110,16 @@ public class WireControl : MonoBehaviour {
             }
 
             DrawWire();
+        }
+
+        if (isGrabbing)
+        {
+            SetHandRotation(WireTarget.transform.position - player.transform.position);
+
+            if (playerCtrl.HitWire != this)
+            {
+                isGrabbing = false;
+            }
         }
     }
 

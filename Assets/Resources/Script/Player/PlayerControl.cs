@@ -12,7 +12,13 @@ public class PlayerControl : MonoBehaviour {
     public bool IsDead { get { return isdead; } }
 
     [SerializeField]
-    private float speed;
+    private float acc;
+    [SerializeField]
+    private float startSpeed;
+    [SerializeField]
+    private float speedLimit;
+    [SerializeField]
+    private float stopRadius;
 
     private bool isdead = false;
 
@@ -30,6 +36,7 @@ public class PlayerControl : MonoBehaviour {
     private Animator anim;
 
     private AudioSource au;
+    private Vector3 grabOffset;
 
     void Awake()
     {
@@ -66,15 +73,18 @@ public class PlayerControl : MonoBehaviour {
             {
                 wire1.ShootWire();
                 anim.SetBool("prepare", false);
-                au.Play();
             }
             else if (!wire2.IsWiring)
             {
                 wire2.ShootWire();
                 anim.SetBool("prepare", false);
-                au.Play();
             }
         }
+
+        if (rb2d.velocity.magnitude > speedLimit)
+        {
+            rb2d.velocity = rb2d.velocity.normalized * speedLimit;
+        } 
     }
 
     public void SetWireDestination(WireControl obj)
@@ -83,7 +93,7 @@ public class PlayerControl : MonoBehaviour {
         {
             hitWire = obj;
             Vector2 direction = hitWire.Target.transform.position - transform.position;
-            rb2d.AddForce(direction.normalized * speed);
+            rb2d.velocity += direction.normalized * startSpeed;
             anim.SetBool("move", true);
             reached = false;
         }
@@ -96,12 +106,24 @@ public class PlayerControl : MonoBehaviour {
             return;
         }
 
-        if (hitWire != null && !reached)
+        if (hitWire != null)
         {
-            Vector2 direction = hitWire.Target.transform.position - transform.position;
-            rb2d.AddForce(direction.normalized * speed);
+            if (reached)
+            {
+                transform.position = hitWire.Target.transform.position + grabOffset;
+            }
+            else
+            {
+                Vector2 direction = hitWire.Target.transform.position - transform.position;
+                rb2d.AddForce(direction.normalized * acc);
 
-            PlayerImage.transform.localScale = new Vector3((rb2d.velocity.x > 0 ? -1 : 1), 1, 1);
+                PlayerImage.transform.localScale = new Vector3((rb2d.velocity.x > 0 ? -1 : 1), 1, 1);
+
+                if (Vector3.Distance(hitWire.Target.transform.position, transform.position) < stopRadius)
+                {
+                    ReachWall();
+                }
+            }
         }
     }
 	
@@ -116,37 +138,33 @@ public class PlayerControl : MonoBehaviour {
 
     void GrabWall(GameObject wall, Vector2 point)
     {
-        anim.SetBool("move", false);
-        reached = true;
-        rb2d.velocity = Vector2.zero;
+        ReachWall();
         if (hitWire == wire1)
         {
-            hitWire = wire2;
-            wire2.GrabWall(wall, point);
+            wire1.GrabWall(wall, point);
         }
         else if (hitWire == wire2)
         {
-            hitWire = wire1;
-            wire1.GrabWall(wall, point);
+            wire2.GrabWall(wall, point);
         }
+
+        grabOffset = transform.position - (Vector3)point;
+    }
+
+    void ReachWall()
+    {
+        anim.SetBool("move", false);
+        reached = true;
+        rb2d.velocity = Vector2.zero;
+        grabOffset = transform.position - hitWire.Target.transform.position;
     }
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.GetComponent<BlueObject>() != null)
+        if (coll.gameObject.GetComponent<BlueObject>() != null &&
+            hitWire.Target.transform.parent == coll.transform)
         {
             GrabWall(coll.gameObject, coll.contacts[0].point);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        SkyblueObject obj = other.gameObject.GetComponent<SkyblueObject>();
-        if (obj != null && hitWire.Target.transform.parent == other.transform)
-        {
-            anim.SetBool("move", false);
-            reached = true;
-            rb2d.velocity = Vector2.zero;
         }
     }
 
@@ -154,11 +172,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (!reached)
         {
-            BlueObject wall = coll.gameObject.GetComponent<BlueObject>();
-            if (wall != null && hitWire.Target.transform.parent == coll.transform)
-            {
-                GrabWall(wall.gameObject, coll.contacts[0].point);
-            }
+            OnCollisionEnter2D(coll);
         }
     }
 
