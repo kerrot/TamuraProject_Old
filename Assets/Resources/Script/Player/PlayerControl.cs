@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerControl : MonoBehaviour {
 
@@ -17,10 +18,10 @@ public class PlayerControl : MonoBehaviour {
     [SerializeField]
     private float speedLimit;
     [SerializeField]
-    private float stopRadius;
-    [SerializeField]
     private bool HitbyMouseDown;
     [SerializeField]
+    private Animator bodyAnim;
+
     private Animator anim;
 
     private bool isdead = false;
@@ -37,6 +38,7 @@ public class PlayerControl : MonoBehaviour {
 	static private Vector3 revivePos;
     
     private Vector3 grabOffset;
+    private float stopRadius;
 
     void Awake()
     {
@@ -49,6 +51,7 @@ public class PlayerControl : MonoBehaviour {
         anim = GetComponent<Animator>();
 
         transform.position = revivePos;
+        stopRadius = GetComponent<CircleCollider2D>().radius * transform.lossyScale.x;
     }
 
     void Update()
@@ -66,7 +69,6 @@ public class PlayerControl : MonoBehaviour {
             {
                 if (Input.GetMouseButton(0))
                 {
-                    anim.SetTrigger("shoot");
                     freeWire.ShootWire();
                 }
             }
@@ -74,12 +76,11 @@ public class PlayerControl : MonoBehaviour {
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    anim.SetBool("prepare", true);
+                    freeWire.PrepareShoot();
                 }
-                else if (anim.GetBool("prepare") && Input.GetMouseButtonUp(0))
+                else if (Input.GetMouseButtonUp(0))
                 {
                     freeWire.ShootWire();
-                    anim.SetBool("prepare", false);
                 }
             }
         }
@@ -87,7 +88,7 @@ public class PlayerControl : MonoBehaviour {
         if (rb2d.velocity.magnitude > speedLimit)
         {
             rb2d.velocity = rb2d.velocity.normalized * speedLimit;
-        } 
+        }
     }
 
     WireControl GetFreeWire()
@@ -109,10 +110,20 @@ public class PlayerControl : MonoBehaviour {
     {
         if (obj != null)
         {
+            if (obj == wireRight)
+            {
+                anim.SetTrigger("RightShoot");
+            }
+            else if (obj == wireLeft)
+            {
+                anim.SetTrigger("LeftShoot");
+            }
+
             hitWire = obj;
             Vector2 direction = hitWire.Target.transform.position - transform.position;
             rb2d.velocity += direction.normalized * startSpeed;
-            anim.SetBool("move", true);
+            anim.SetFloat("Velocity", direction.x);
+            anim.SetBool("Stop", false);
             reached = false;
         }
     }
@@ -149,7 +160,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (!isdead)
         {
-            anim.SetTrigger("die");
+            bodyAnim.SetTrigger("die");
             isdead = true;
         }
     }
@@ -171,7 +182,7 @@ public class PlayerControl : MonoBehaviour {
 
     void ReachWall()
     {
-        anim.SetBool("move", false);
+        anim.SetBool("Stop", true);
         reached = true;
         rb2d.velocity = Vector2.zero;
         grabOffset = transform.position - hitWire.Target.transform.position;

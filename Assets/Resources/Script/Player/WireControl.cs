@@ -7,12 +7,15 @@ public class WireControl : MonoBehaviour {
 	private float WireMaxLength = 0;
 	[SerializeField]
 	private float WireTime = 1;
+    [SerializeField]
+    private GameObject Head;
 
     public bool IsWiring { get { return line.enabled || isGrabbing; } }
     public GameObject Target { get { return WireTarget; } }
 
     private GameObject Hand;
     private GameObject WireTarget;
+    
 
     private LineRenderer line;
     private int layerMask;
@@ -26,9 +29,12 @@ public class WireControl : MonoBehaviour {
 
     private bool isGrabbing = false;
 
+    private Animator anim;
+    private AudioSource se;
+
     void Awake ()
     {
-        line = GetComponent<LineRenderer>();
+        line = GetComponentInChildren<LineRenderer>();
         line.enabled = false;
         layerMask = 1 << LayerMask.NameToLayer("Hittable");
         player = transform.parent.gameObject;
@@ -37,20 +43,45 @@ public class WireControl : MonoBehaviour {
         WireTarget = transform.FindChild("WireTarget").gameObject;
         minHitDistance = player.GetComponent<CircleCollider2D>().radius;
         minHitDistance = (WireMaxLength > minHitDistance) ? minHitDistance : 0;
+        anim = GetComponent<Animator>();
+        se = player.GetComponent<AudioSource>();
     }
 
     public void ShootWire()
     {
-        if (!line.enabled && !isGrabbing)
+        if (CanShoot())
         {
             LineReset();
 
             Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 20));
             wireStep = ((Vector3)pos - WireTarget.transform.position).normalized;
-
+            se.Play();
             line.enabled = true;
+            Head.SetActive(true);
+
+            if (anim.GetBool("prepare"))
+            {
+                anim.SetBool("prepare", false);
+            }
+            else
+            {
+                anim.SetTrigger("shoot");
+            }
 
         }
+    }
+
+    public void PrepareShoot()
+    {
+        if (CanShoot())
+        {
+            anim.SetBool("prepare", true);
+        }
+    }
+
+    bool CanShoot()
+    {
+        return !line.enabled && !isGrabbing;
     }
 
     public void GrabWall(GameObject wall, Vector2 point)
@@ -68,6 +99,7 @@ public class WireControl : MonoBehaviour {
     {
         float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         Hand.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
+        WireTarget.transform.rotation = Hand.transform.rotation;
     }
 
     void FixedUpdate()
@@ -79,23 +111,25 @@ public class WireControl : MonoBehaviour {
 
         if (line.enabled)
         {
+            float step = Time.deltaTime / WireTime * WireMaxLength;
             if (isReached)
             {
-                if (playerCtrl.HitWire != this || isGrabbing)
+                if (playerCtrl.HitWire != this)
                 {
                     Vector3 direction = WireTarget.transform.position - transform.position;
-                    float step = Time.deltaTime / WireTime * WireMaxLength;
+                    
                     if (direction.magnitude <= step)
                     {
                         line.enabled = false;
+                        Head.SetActive(false);
                         return;
                     }
-                    WireTarget.transform.position -= direction.normalized * Time.deltaTime / WireTime * WireMaxLength;
+                    WireTarget.transform.position -= direction.normalized * step;
                 }
             }
             else
             {
-                WireTarget.transform.position += wireStep * Time.deltaTime / WireTime * WireMaxLength;
+                WireTarget.transform.position += wireStep * step;
                 if (Vector3.Distance(WireTarget.transform.position, transform.position) > minHitDistance)
                 {
                     if (WireHitSomething())
@@ -104,6 +138,7 @@ public class WireControl : MonoBehaviour {
                     }
                     else if (Vector3.Distance(WireTarget.transform.position, transform.position) >= WireMaxLength)
                     {
+                        anim.SetTrigger("hit");
                         isReached = true;
                     }
                 }
@@ -151,6 +186,7 @@ public class WireControl : MonoBehaviour {
                 HittableObject obj = hit.collider.gameObject.GetComponent<HittableObject>();
                 if (obj != null && obj.IsHitted(this, hit))
                 {
+                    anim.SetTrigger("hit");
                     return true;
                 }
             }
