@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(CircleCollider2D))]
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerControl : MonoBehaviour {
 
@@ -21,7 +20,8 @@ public class PlayerControl : MonoBehaviour {
     private float stopRadius;
     [SerializeField]
     private bool HitbyMouseDown;
-
+    [SerializeField]
+    private Animator anim;
 
     private bool isdead = false;
 
@@ -29,23 +29,21 @@ public class PlayerControl : MonoBehaviour {
     private bool reached = false;
 
     private Rigidbody2D rb2d;       
-    private WireControl wire1;
-    private WireControl wire2;
+    private WireControl wireRight;
+    private WireControl wireLeft;
 
     private GameObject PlayerImage;
 
 	static private Vector3 revivePos;
-
-    private Animator anim;
-
+    
     private Vector3 grabOffset;
 
     void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
 
-        wire1 = transform.GetChild(0).GetComponent<WireControl>();
-        wire2 = transform.GetChild(1).GetComponent<WireControl>();
+        wireRight = transform.GetChild(0).GetComponent<WireControl>();
+        wireLeft = transform.GetChild(1).GetComponent<WireControl>();
         PlayerImage = transform.FindChild("PlayerImage").gameObject;
 
         anim = GetComponent<Animator>();
@@ -68,7 +66,7 @@ public class PlayerControl : MonoBehaviour {
             {
                 if (Input.GetMouseButton(0))
                 {
-                    anim.SetTrigger("fire");
+                    anim.SetTrigger("shoot");
                     freeWire.ShootWire();
                 }
             }
@@ -94,14 +92,14 @@ public class PlayerControl : MonoBehaviour {
 
     WireControl GetFreeWire()
     {
-        if (!wire1.IsWiring)
+        if (!wireRight.IsWiring)
         {
-            return wire1;
+            return wireRight;
         }
 
-        if (!wire2.IsWiring)
+        if (!wireLeft.IsWiring)
         {
-            return wire2;
+            return wireLeft;
         }
 
         return null;
@@ -159,13 +157,13 @@ public class PlayerControl : MonoBehaviour {
     void GrabWall(GameObject wall, Vector2 point)
     {
         ReachWall();
-        if (hitWire == wire1)
+        if (hitWire == wireRight)
         {
-            wire1.GrabWall(wall, point);
+            wireRight.GrabWall(wall, point);
         }
-        else if (hitWire == wire2)
+        else if (hitWire == wireLeft)
         {
-            wire2.GrabWall(wall, point);
+            wireLeft.GrabWall(wall, point);
         }
 
         grabOffset = transform.position - (Vector3)point;
