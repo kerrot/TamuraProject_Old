@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+
 using System.Collections;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -205,13 +205,9 @@ public class PlayerControl : MonoBehaviour {
         }
     }
 
-    void ReTry()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
 	public void SetRevivePos(Vector3 pos)
 	{
-		revivePos = pos;
+        pos.z = 0;
+        revivePos = pos;
 	}
 }
