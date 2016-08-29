@@ -9,6 +9,8 @@ public class WireControl : MonoBehaviour {
 	private float WireTime = 1;
     [SerializeField]
     private GameObject Head;
+    [SerializeField]
+    private GameObject HandFront;
 
     public bool IsWiring { get { return line.enabled || isGrabbing; } }
     public GameObject Target { get { return WireTarget; } }
@@ -168,8 +170,13 @@ public class WireControl : MonoBehaviour {
     void DrawWire()
     {
         Vector2 tmp = (Vector2)(WireTarget.transform.position - player.transform.position);
-        line.SetPosition(0, player.transform.position);
-        line.SetPosition(1, WireTarget.transform.position);
+
+        Vector3 startpos = HandFront.transform.position;
+        startpos.z = 3;
+        Vector3 endpos = WireTarget.transform.position;
+        endpos.z = 3;
+        line.SetPosition(0, startpos);
+        line.SetPosition(1, endpos);
         line.material.mainTextureScale = new Vector2(tmp.magnitude, 1);
 
         SetHandRotation(tmp);
