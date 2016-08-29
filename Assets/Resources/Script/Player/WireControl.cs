@@ -32,6 +32,7 @@ public class WireControl : MonoBehaviour {
     private bool isGrabbing = false;
 
     private Animator anim;
+    private Animator fireAnim;
     private AudioSource se;
 
     void Awake ()
@@ -46,6 +47,7 @@ public class WireControl : MonoBehaviour {
         minHitDistance = player.GetComponent<CircleCollider2D>().radius;
         minHitDistance = (WireMaxLength > minHitDistance) ? minHitDistance : 0;
         anim = GetComponent<Animator>();
+        fireAnim = HandFront.GetComponent<Animator>();
         se = player.GetComponent<AudioSource>();
     }
 
@@ -60,6 +62,7 @@ public class WireControl : MonoBehaviour {
             se.Play();
             line.enabled = true;
             Head.SetActive(true);
+            fireAnim.SetTrigger("fire");
 
             if (anim.GetBool("prepare"))
             {
@@ -67,9 +70,8 @@ public class WireControl : MonoBehaviour {
             }
             else
             {
-                anim.SetTrigger("shoot");
+                anim.SetTrigger("shoot");    
             }
-
         }
     }
 
