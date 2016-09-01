@@ -166,6 +166,7 @@ public class WireControl : MonoBehaviour {
     {
         WireTarget.transform.parent = null;
         WireTarget.transform.position = transform.position;
+        WireTarget.transform.localScale = new Vector3(1, 1, 1);
         isReached = false;
     }
 
@@ -174,9 +175,9 @@ public class WireControl : MonoBehaviour {
         Vector2 tmp = (Vector2)(WireTarget.transform.position - player.transform.position);
 
         Vector3 startpos = HandFront.transform.position;
-        startpos.z = 3;
+        startpos.z = 0.5f;
         Vector3 endpos = WireTarget.transform.position;
-        endpos.z = 3;
+        endpos.z = 0.5f;
         line.SetPosition(0, startpos);
         line.SetPosition(1, endpos);
         line.material.mainTextureScale = new Vector2(tmp.magnitude, 1);
@@ -190,6 +191,7 @@ public class WireControl : MonoBehaviour {
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, layerMask);
         if (hits.Length > 0)
         {
+            Debug.Log(hits.Length);
             foreach (var hit in hits)
             {
                 HittableObject obj = hit.collider.gameObject.GetComponent<HittableObject>();
