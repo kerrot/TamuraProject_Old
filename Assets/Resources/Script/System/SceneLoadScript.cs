@@ -5,18 +5,15 @@ using System.Collections;
 public class SceneLoadScript: MonoBehaviour {
 
 	public void SceneLoad (){
-        SceneManager.LoadScene("Stage");
+		SceneManager.LoadScene("GameClear");
 	}
 
-	public void SceneLoa (){
-		SceneManager.LoadScene("DemoStage");
-	} 
-
-	public void SceneLod (){
-		SceneManager.LoadScene("tamuranotesuto");
-	} 
-
-	public void Sceneoad (){
-		SceneManager.LoadScene("Untitled");
+	public void SceneLoad1 (){
+		SceneManager.LoadScene("masuta-sute-zi");
 	}
+
+	public void SceneLoad3 (){
+		SceneManager.LoadScene("title");
+	} 
+
 }
