@@ -3,10 +3,12 @@ using System.Collections;
 
 public class MoviePlay : MonoBehaviour {
 
+	MovieTexture movie;
+
 	void Start ()
 	{
-#if !UNITY_IOS
-        ((MovieTexture)GetComponent<Renderer>().material.mainTexture).Play();
-#endif
+		movie = ((MovieTexture)GetComponent<Renderer> ().material.mainTexture);
+		movie.loop = true;
+		movie.Play();
     }
 }
