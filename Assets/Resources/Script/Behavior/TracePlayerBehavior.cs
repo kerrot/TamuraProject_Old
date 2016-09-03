@@ -16,6 +16,8 @@ public class TracePlayerBehavior : MonoBehaviour {
     private Vector3 direction;
     private SpriteRenderer sprite;
 
+	private bool moving = false;
+
     void Awake()
     {
         player = GameObject.FindObjectOfType<PlayerControl>();
@@ -26,16 +28,21 @@ public class TracePlayerBehavior : MonoBehaviour {
     {
         if (checking)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < checkRadius)
-            {
-                ChangeDirection();
-            }
+			if (Vector3.Distance (transform.position, player.transform.position) < checkRadius) {
+				ChangeDirection ();
+				moving = true;
+			} 
+			else {
+				moving = false;
+			}
         }
     }
 
     void FixedUpdate()
     {
-        transform.position += direction * Time.deltaTime * speed;
+		if (moving) {
+			transform.position += direction * Time.deltaTime * speed;
+		}
     }
 
     void ChangeDirection()

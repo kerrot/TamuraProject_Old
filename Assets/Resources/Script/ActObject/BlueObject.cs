@@ -11,8 +11,6 @@ public class BlueObject : HittableObject
 
     override public bool IsHitted(WireControl wire, RaycastHit2D hit)
     {
-        Collider2D c = GetComponent<Collider2D>();
-
         if (CheckHit(wire))
         {
             Grab(wire, hit);

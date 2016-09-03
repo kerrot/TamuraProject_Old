@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class MoviePlay : MonoBehaviour {
-
+	/*
 	MovieTexture movie;
 
 	void Start ()
@@ -10,5 +10,5 @@ public class MoviePlay : MonoBehaviour {
 		movie = ((MovieTexture)GetComponent<Renderer> ().material.mainTexture);
 		movie.loop = true;
 		movie.Play();
-    }
+    }*/
 }

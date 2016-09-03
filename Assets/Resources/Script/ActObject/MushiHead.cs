@@ -6,8 +6,6 @@ using System.Collections;
 public class MushiHead : MusiControl
 {
     [SerializeField]
-    private float traceRadius;
-    [SerializeField]
     private PathEditor editor;
     [SerializeField]
     private float speed;
@@ -17,12 +15,16 @@ public class MushiHead : MusiControl
     private GameObject DieEffect;
 
     public float Speed { get { return speed; } }
+
     bool isdead = false;
     GameObject lastDestination;
+	BossTraceCheck trace;
 
     protected override void Awake()
     {
         base.Awake();
+
+		trace = GameObject.FindObjectOfType<BossTraceCheck> ();
 
         FindNearestDestination();
         transform.LookAt(destination.transform);
@@ -80,7 +82,7 @@ public class MushiHead : MusiControl
     void FindNextDestination()
     {
         PlayerControl player = FindObjectOfType<PlayerControl>();
-        if (player != null && Vector3.Distance(player.transform.position, transform.position) < traceRadius)
+		if (player != null && trace.PlayerInRange)
         {
             CloseToPlayerDestination(player.transform.position);
         }

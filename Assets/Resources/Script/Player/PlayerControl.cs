@@ -146,8 +146,9 @@ public class PlayerControl : MonoBehaviour {
                 Vector2 direction = hitWire.Target.transform.position - transform.position;
                 rb2d.AddForce(direction.normalized * acc);
 
-                PlayerImage.transform.localScale = new Vector3((rb2d.velocity.x > 0 ? -1 : 1), 1, 1);
-
+				//float angle = Vector2.Angle (Vector2.up, direction);
+				//PlayerImage.transform.rotation = direction.x > 0 ? Quaternion.Euler(0, 0, -angle) : Quaternion.Euler(0, 0, angle);
+	
                 if (Vector3.Distance(hitWire.Target.transform.position, transform.position) < stopRadius)
                 {
                     ReachWall();
@@ -182,6 +183,7 @@ public class PlayerControl : MonoBehaviour {
 
     void ReachWall()
     {
+		//PlayerImage.transform.rotation = Quaternion.identity;
         anim.SetBool("Stop", true);
         reached = true;
         rb2d.velocity = Vector2.zero;
