@@ -10,6 +10,7 @@ public abstract class ActBase {
         ActDestroy,
         ActAnimation,
         ActPlayerDie,
+        ActChangeScene,
     }
 
     public struct ActionParam

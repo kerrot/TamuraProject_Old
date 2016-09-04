@@ -57,7 +57,7 @@ public class WireControl : MonoBehaviour {
         {
             LineReset();
 
-            Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 20));
+            Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.gameObject.transform.position.z));
             wireStep = ((Vector3)pos - WireTarget.transform.position).normalized;
             se.Play();
             line.enabled = true;
@@ -191,7 +191,6 @@ public class WireControl : MonoBehaviour {
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, direction.magnitude, layerMask);
         if (hits.Length > 0)
         {
-            Debug.Log(hits.Length);
             foreach (var hit in hits)
             {
                 HittableObject obj = hit.collider.gameObject.GetComponent<HittableObject>();

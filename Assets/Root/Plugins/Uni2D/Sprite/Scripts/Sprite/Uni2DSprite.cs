@@ -811,7 +811,7 @@ public class Uni2DSprite : MonoBehaviour
 			rSkinnedMeshRendererComponent.castShadows = rMeshRendererComponent.castShadows;
 			#endif
 			rSkinnedMeshRendererComponent.receiveShadows = rMeshRendererComponent.receiveShadows;
-			rSkinnedMeshRendererComponent.useLightProbes = rMeshRendererComponent.useLightProbes;
+            rSkinnedMeshRendererComponent.lightProbeUsage = rMeshRendererComponent.lightProbeUsage;
 			
 			#if BEFORE_UNITY_5
 			rSkinnedMeshRendererComponent.lightProbeAnchor = rMeshRendererComponent.lightProbeAnchor;
@@ -851,7 +851,7 @@ public class Uni2DSprite : MonoBehaviour
 			rMeshRendererComponent.castShadows = rSkinnedMeshRendererComponent.castShadows;
 			#endif
 			rMeshRendererComponent.receiveShadows = rSkinnedMeshRendererComponent.receiveShadows;
-			rMeshRendererComponent.useLightProbes = rSkinnedMeshRendererComponent.useLightProbes;
+			rMeshRendererComponent.lightProbeUsage = rSkinnedMeshRendererComponent.lightProbeUsage;
 			
 			#if BEFORE_UNITY_5
 			rMeshRendererComponent.lightProbeAnchor = rSkinnedMeshRendererComponent.lightProbeAnchor;

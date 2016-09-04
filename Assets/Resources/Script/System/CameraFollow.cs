@@ -1,26 +1,24 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
+    [SerializeField]
+    private Collider2D range;
+    [SerializeField]
+    private float smooth;
 
-    public GameObject player;       //Public variable to store a reference to the player game object
+    private PlayerControl player;
 
+    int layerMask;
 
-    private Vector3 offset;         //Private variable to store the offset distance between the player and camera
-
-    // Use this for initialization
     void Start()
     {
 		if (player == null) 
 		{
-			player = GameObject.FindGameObjectWithTag ("Player");
+            player = GameObject.FindObjectOfType<PlayerControl>();
 		}
-
-        Vector3 pos = player.transform.position;
-        pos.z = transform.position.z;
-
-        transform.position = pos;
-        offset = transform.position - player.transform.position;
+        layerMask = LayerMask.GetMask("Camera");
     }
 
     // LateUpdate is called after Update each frame
@@ -28,7 +26,50 @@ public class CameraFollow : MonoBehaviour {
     {
         if (player != null)
         {
-            transform.position = player.transform.position + offset;
+            Vector3 tmp = transform.position;
+            
+            if (range != null)
+            {
+                tmp.x = player.transform.position.x;
+                
+                if (!range.OverlapPoint(tmp))
+                {
+                    Vector2 direction = (tmp.x > transform.position.x) ? Vector2.left : Vector2.right;
+                    RaycastHit2D hit = Physics2D.Raycast(tmp, direction, 100000, layerMask);
+                    if (hit.collider == range)
+                    {
+                        tmp.x = hit.point.x;
+                    }
+                }
+
+                tmp.y = player.transform.position.y;
+
+                if (!range.OverlapPoint(tmp))
+                {
+                    Vector2 direction = (tmp.y > transform.position.y) ? Vector2.down : Vector2.up;
+                    RaycastHit2D hit = Physics2D.Raycast(tmp, direction, 100000, layerMask);
+                    if (hit.collider == range)
+                    {
+                        tmp.y = hit.point.y;
+                    }
+                }
+
+                tmp.z = transform.position.z;
+                if (range.OverlapPoint(tmp))
+                {
+                    transform.position = tmp;
+                }
+                else
+                {
+                    tmp.z = transform.position.z;
+                }
+            }
+            else
+            {
+                tmp = player.transform.position;
+                tmp.z = transform.position.z;
+                transform.position = tmp;
+            }
         }
     }
 }
