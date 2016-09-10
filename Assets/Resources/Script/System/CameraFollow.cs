@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
     [SerializeField]
-    private Collider2D range;
+	private PolygonCollider2D range;
     [SerializeField]
     private float smooth;
 
@@ -26,10 +26,10 @@ public class CameraFollow : MonoBehaviour {
     {
         if (player != null)
         {
-            Vector3 tmp = transform.position;
-            
+			Vector3 tmp = transform.position;
             if (range != null)
             {
+				/*
                 tmp.x = player.transform.position.x;
                 
                 if (!range.OverlapPoint(tmp))
@@ -63,6 +63,27 @@ public class CameraFollow : MonoBehaviour {
                 {
                     tmp.z = transform.position.z;
                 }
+                */
+				/*Vector3 dest = player.transform.position;
+
+				if (!range.OverlapPoint(dest))
+				{
+					int index = 0;
+					float distance = Mathf.Infinity;
+					int nearest = null;
+
+					for (index = 0; index < range.points.Length; ++index) 
+					{
+						float tmp = Vector2.Distance (range.points [i], dest);
+						if (tmp < distance) 
+						{
+							distance = tmp;
+							nearest = index;
+						}
+					}
+
+
+				}*/
             }
             else
             {
@@ -72,4 +93,22 @@ public class CameraFollow : MonoBehaviour {
             }
         }
     }
+	/*
+	float GetDistanceToLineSegment(Vector2 p1, Vector2 p2, Vector2 point)
+	{
+		Vector2 v1 = point - p1;
+		Vector2 v2 = p2 - p1;
+		if (Vector2.Angle (v1, v2) < 90) 
+		{
+			v1 = point - p2;
+			v2 = p1 - p2;
+			if (Vector2.Angle (v1, v2) < 90) 
+			{
+
+			}
+		}
+
+		float d1;
+	}
+    */
 }
