@@ -67,7 +67,7 @@ public class PlayerControl : MonoBehaviour {
         {
             if (HitbyMouseDown)
             {
-                if (Input.GetMouseButton(0))
+				if (Input.GetMouseButtonDown(0))
                 {
                     freeWire.ShootWire();
                 }

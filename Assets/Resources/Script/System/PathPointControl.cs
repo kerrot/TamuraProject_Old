@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
-//#if !UNITY_IOS
-        using UnityEditor;
-//#endif
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 
 public class PathPointControl : MonoBehaviour {
 
-//#if !UNITY_IOS
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
-        Gizmos.DrawSphere(transform.position, PathEditor.DisplaySize);
+		Gizmos.color = Color.white;
+		Gizmos.DrawSphere(transform.position, PathEditor.DisplaySize);
+#if UNITY_EDITOR
 
-        Handles.Label(transform.position + Vector3.up * 2, transform.name);
-    }
-//#endif
+		Handles.Label(transform.position + Vector3.up * 2, transform.name);
+#endif
+	}
 }
