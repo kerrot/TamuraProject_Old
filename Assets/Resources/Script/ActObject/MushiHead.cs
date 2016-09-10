@@ -184,6 +184,8 @@ public class MushiHead : MusiControl
             {
                 DieEffect.SetActive(true);
                 isdead = true;
+				GameObject.FindObjectOfType<PlayerControl> ().SetRevivePos (Vector3.zero);
+				GetComponent<Collider2D> ().enabled = false;
                 StartCoroutine(GameClear());
             }
 
