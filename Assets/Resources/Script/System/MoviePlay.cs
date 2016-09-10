@@ -2,23 +2,34 @@
 using System.Collections;
 
 public class MoviePlay : MonoBehaviour {
+	[SerializeField]
+	private float second;
 
+	private float last;
 
+	void Start()
+	{
+		LaunchProjectile ();
+	}
 
 	void Update () 
 	{
-		InvokeRepeating("LaunchProjectile",1,5);
+		if (Time.time - last > second) 
+		{
+			LaunchProjectile ();
+		}
 	}
 
 	void LaunchProjectile ()
 	{
 		Handheld.PlayFullScreenMovie("qwe.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
+		last = Time.time;
 	}
 
 	void OnGUI(){
 		if (GUILayout.Button("オープンニング", GUILayout.Height(150)))
 		{
-			Handheld.PlayFullScreenMovie("qwe.mp4", Color.white, FullScreenMovieControlMode.CancelOnInput);
+			LaunchProjectile ();
 		}
 	}
 
