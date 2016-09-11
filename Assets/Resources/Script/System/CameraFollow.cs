@@ -29,42 +29,7 @@ public class CameraFollow : MonoBehaviour {
 			Vector3 tmp = transform.position;
             if (range != null)
             {
-				/*
-                tmp.x = player.transform.position.x;
-                
-                if (!range.OverlapPoint(tmp))
-                {
-                    Vector2 direction = (tmp.x > transform.position.x) ? Vector2.left : Vector2.right;
-                    RaycastHit2D hit = Physics2D.Raycast(tmp, direction, 100000, layerMask);
-                    if (hit.collider == range)
-                    {
-                        tmp.x = hit.point.x;
-                    }
-                }
-
-                tmp.y = player.transform.position.y;
-
-                if (!range.OverlapPoint(tmp))
-                {
-                    Vector2 direction = (tmp.y > transform.position.y) ? Vector2.down : Vector2.up;
-                    RaycastHit2D hit = Physics2D.Raycast(tmp, direction, 100000, layerMask);
-                    if (hit.collider == range)
-                    {
-                        tmp.y = hit.point.y;
-                    }
-                }
-
-                tmp.z = transform.position.z;
-                if (range.OverlapPoint(tmp))
-                {
-                    transform.position = tmp;
-                }
-                else
-                {
-                    tmp.z = transform.position.z;
-                }
-                */
-				tmp = player.transform.position;
+                tmp = player.transform.position;
 
 				if (!range.OverlapPoint(tmp))
 				{
@@ -81,20 +46,24 @@ public class CameraFollow : MonoBehaviour {
 							nearest = index;
 						}
 					}
-            
+
                     Vector3 p1 = GetNearestPointToLineSegment(range.points[nearest], range.points[(nearest  - 1 + range.points.Length) % range.points.Length], player.transform.position);
                     Vector3 p2 = GetNearestPointToLineSegment(range.points[nearest], range.points[(nearest + 1) % range.points.Length], player.transform.position);
 
                     tmp = (Vector3.Distance(p1, tmp) > Vector3.Distance(p2, tmp)) ? p2 : p1;
-                    Debug.DrawLine(tmp, player.transform.position);
+
+                    Debug.DrawLine(p1, player.transform.position, Color.white);
+                    Debug.DrawLine(p2, player.transform.position, Color.white);
+                    Debug.DrawLine(tmp, player.transform.position, Color.red);
 				}
             }
             else
             {
                 tmp = player.transform.position;
-                tmp.z = transform.position.z;
-                transform.position = tmp;
+                
             }
+            tmp.z = transform.position.z;
+            transform.position = tmp;
         }
     }
 	
@@ -108,8 +77,11 @@ public class CameraFollow : MonoBehaviour {
 			v2 = p1 - p2;
 			if (Vector2.Angle (v1, v2) < 90f) 
 			{
-                return Vector3.Project(point, p2 - p1);
-			}
+                Vector2 vector = point - p1;
+                Vector2 onNormal = p2 - p1;
+
+                return p1 + Vector3.Project(vector, onNormal);
+            }
 		}
 
 		float d1 = Vector2.Distance(p1, point);
