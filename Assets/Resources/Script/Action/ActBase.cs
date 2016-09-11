@@ -11,6 +11,7 @@ public abstract class ActBase {
         ActAnimation,
         ActPlayerDie,
         ActChangeScene,
+        ActCoin,
     }
 
     public struct ActionParam

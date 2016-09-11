@@ -10,15 +10,12 @@ public class CameraFollow : MonoBehaviour {
 
     private PlayerControl player;
 
-    int layerMask;
-
     void Start()
     {
 		if (player == null) 
 		{
             player = GameObject.FindObjectOfType<PlayerControl>();
 		}
-        layerMask = LayerMask.GetMask("Camera");
     }
 
     // LateUpdate is called after Update each frame

@@ -33,8 +33,6 @@ public class PlayerControl : MonoBehaviour {
     private WireControl wireRight;
     private WireControl wireLeft;
 
-    private GameObject PlayerImage;
-
 	static private Vector3 revivePos;
     
     private Vector3 grabOffset;
@@ -46,7 +44,6 @@ public class PlayerControl : MonoBehaviour {
 
         wireRight = transform.GetChild(0).GetComponent<WireControl>();
         wireLeft = transform.GetChild(1).GetComponent<WireControl>();
-        PlayerImage = transform.FindChild("PlayerImage").gameObject;
 
         anim = GetComponent<Animator>();
 
