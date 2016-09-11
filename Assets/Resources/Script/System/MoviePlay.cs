@@ -1,37 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MoviePlay : MonoBehaviour {
-	[SerializeField]
-	private float second;
-
-	private float last;
+    [SerializeField]
+    private string sceneName;
 
 	void Start()
 	{
-		LaunchProjectile ();
-	}
+        Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
+    }
 
 	void Update () 
 	{
-		if (Time.time - last > second) 
+		if (Input.GetMouseButton(0)) 
 		{
-			LaunchProjectile ();
+            SceneManager.LoadScene(sceneName);
 		}
 	}
-
-	void LaunchProjectile ()
-	{
-		Handheld.PlayFullScreenMovie("qwe.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
-		last = Time.time;
-	}
-
-	void OnGUI(){
-		if (GUILayout.Button("オープンニング", GUILayout.Height(150)))
-		{
-			LaunchProjectile ();
-		}
-	}
-
-
 }
