@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
-public class ColliderOrange : ColliderObject
+public class ColliderOrange : ColliderEnter
 {
     protected override void OnCollisionEnter2D(Collision2D coll)
     {
