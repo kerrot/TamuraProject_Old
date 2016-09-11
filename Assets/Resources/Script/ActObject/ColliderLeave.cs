@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
-public class ColliderObject : MonoBehaviour
+public class ColliderLeave : MonoBehaviour
 {
     [SerializeField]
     protected List<ColliderActionUnit> actions = new List<ColliderActionUnit>();
@@ -25,12 +25,12 @@ public class ColliderObject : MonoBehaviour
 
     protected ActBase.ActionParam param = new ActBase.ActionParam();
 
-    protected virtual void OnCollisionEnter2D(Collision2D coll)
+    protected virtual void OnCollisionExit2D(Collision2D coll)
     {
         Action(coll.gameObject);
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerExit2D(Collider2D other)
     {
         Action(other.gameObject);
     }
