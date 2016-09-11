@@ -64,26 +64,30 @@ public class CameraFollow : MonoBehaviour {
                     tmp.z = transform.position.z;
                 }
                 */
-				/*Vector3 dest = player.transform.position;
+				tmp = player.transform.position;
 
-				if (!range.OverlapPoint(dest))
+				if (!range.OverlapPoint(tmp))
 				{
 					int index = 0;
 					float distance = Mathf.Infinity;
-					int nearest = null;
+					int nearest = 0;
 
 					for (index = 0; index < range.points.Length; ++index) 
 					{
-						float tmp = Vector2.Distance (range.points [i], dest);
-						if (tmp < distance) 
+						float d = Vector2.Distance (range.points [index], tmp);
+						if (d < distance) 
 						{
-							distance = tmp;
+							distance = d;
 							nearest = index;
 						}
 					}
+            
+                    Vector3 p1 = GetNearestPointToLineSegment(range.points[nearest], range.points[(nearest  - 1 + range.points.Length) % range.points.Length], player.transform.position);
+                    Vector3 p2 = GetNearestPointToLineSegment(range.points[nearest], range.points[(nearest + 1) % range.points.Length], player.transform.position);
 
-
-				}*/
+                    tmp = (Vector3.Distance(p1, tmp) > Vector3.Distance(p2, tmp)) ? p2 : p1;
+                    Debug.DrawLine(tmp, player.transform.position);
+				}
             }
             else
             {
@@ -93,22 +97,25 @@ public class CameraFollow : MonoBehaviour {
             }
         }
     }
-	/*
-	float GetDistanceToLineSegment(Vector2 p1, Vector2 p2, Vector2 point)
+	
+	Vector3 GetNearestPointToLineSegment(Vector3 p1, Vector3 p2, Vector3 point)
 	{
 		Vector2 v1 = point - p1;
 		Vector2 v2 = p2 - p1;
-		if (Vector2.Angle (v1, v2) < 90) 
+		if (Vector2.Angle (v1, v2) < 90f) 
 		{
 			v1 = point - p2;
 			v2 = p1 - p2;
-			if (Vector2.Angle (v1, v2) < 90) 
+			if (Vector2.Angle (v1, v2) < 90f) 
 			{
-
+                return Vector3.Project(point, p2 - p1);
 			}
 		}
 
-		float d1;
+		float d1 = Vector2.Distance(p1, point);
+        float d2 = Vector2.Distance(p2, point);
+
+        return (d1 > d2) ? p2 : p1;
 	}
-    */
+    
 }
