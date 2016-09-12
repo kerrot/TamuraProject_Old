@@ -26,7 +26,7 @@ public class ActDestroy : ActBase
             }
             else
             {
-                GameObject.Destroy(obj);
+                DoDestroy(obj);
             }
         }
     }
@@ -34,6 +34,16 @@ public class ActDestroy : ActBase
     IEnumerator DestroyWaitTime(GameObject obj, float time)
     {
         yield return new WaitForSeconds(time);
+        DoDestroy(obj);
+    }
+
+    void DoDestroy(GameObject obj)
+    {
+        OnceInGame once = obj.GetComponent<OnceInGame>();
+        if (once != null)
+        {
+            once.BeDestroyed();
+        }
         GameObject.Destroy(obj);
     }
 }

@@ -6,27 +6,19 @@ public class StartStage : MonoBehaviour {
     [SerializeField]
     private string sceneName;
 	[SerializeField]
-	private float waitTime = 3f;
-
-	bool start = true;
+	private float waitTime = 4f;
 
 	void Start()
 	{
         EndingStage.ClearCoin();
+        OnceObjectManager.ClearRegister();
+        StartCoroutine(OP());
     }
-
-	void Update () 
-	{
-		if (start) {
-			start = false;
-			StartCoroutine (OP());
-		}
-	}
 
 	IEnumerator OP()
 	{
 		yield return new WaitForSeconds(waitTime);
-		Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
+        while (Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput));
 		SceneManager.LoadScene(sceneName);
 	}
 }

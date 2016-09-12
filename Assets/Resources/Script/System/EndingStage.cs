@@ -18,7 +18,6 @@ public class EndingStage : MonoBehaviour {
         coin = 0;
     }
 
-
     void Start()
     {
         List.ForEach(l => l.SetActive(List.IndexOf(l) < coin));
