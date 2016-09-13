@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour {
     [SerializeField]
     private bool HitbyMouseDown;
     [SerializeField]
-    private Animator bodyAnim;
+    private GameObject bodyDirection;
 
     private Animator anim;
 
@@ -109,22 +109,48 @@ public class PlayerControl : MonoBehaviour {
     {
         if (obj != null)
         {
-            if (obj == wireRight)
-            {
-                anim.SetTrigger("RightShoot");
-            }
-            else if (obj == wireLeft)
-            {
-                anim.SetTrigger("LeftShoot");
-            }
-
             hitWire = obj;
             Vector2 direction = hitWire.Target.transform.position - transform.position;
+            
+            if (rb2d.velocity.x >= 0)
+            {
+                if (obj == wireRight)
+                {
+                    anim.SetTrigger((direction.x >= 0) ? "maete_onaji" : "maete_tigau");
+                }
+                else if (obj == wireLeft)
+                {
+                    anim.SetTrigger((direction.x >= 0) ? "usirote_onaji" : "usirote_tigau");
+                }
+            }
+            else
+            {
+                if (obj == wireRight)
+                {
+                    anim.SetTrigger((direction.x >= 0) ? "usirote_tigau" : "usirote_onaji");
+                }
+                else if (obj == wireLeft)
+                {
+                    anim.SetTrigger((direction.x >= 0) ? "maete_tigau" : "maete_onaji");
+                }
+            }
+
             rb2d.velocity += direction.normalized * startSpeed;
-            anim.SetFloat("Velocity", direction.x);
             anim.SetBool("Stop", false);
             reached = false;
         }
+    }
+
+    void ReTry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void DirectionChange()
+    {
+        Vector3 tmp = bodyDirection.transform.localScale;
+        tmp.x = -tmp.x;
+        bodyDirection.transform.localScale = tmp;
     }
 
     void FixedUpdate()
@@ -160,7 +186,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (!isdead)
         {
-            bodyAnim.SetTrigger("die");
+            anim.SetTrigger("Die");
             isdead = true;
         }
     }
