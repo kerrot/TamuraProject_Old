@@ -27,18 +27,18 @@ public class CheckDirection : StateMachineBehaviour {
         animator.SetBool("usirote_onaji", false);
         animator.SetBool("usirote_tigau", false);
 
-        PlayerControl player = GameObject.FindObjectOfType<PlayerControl>();
-        if (direction.x * player.GetComponent<Rigidbody2D>().velocity.x < 0)
-        {
-            if (stateInfo.fullPathHash == yoko)
-            {
-                animator.SetTrigger("usirote_tigau");
-            }
-            else if (stateInfo.fullPathHash == naname)
-            {
-                animator.SetTrigger("maete_tigau");
-            }
-        }
+        //PlayerControl player = GameObject.FindObjectOfType<PlayerControl>();
+        //if (direction.x * player.GetComponent<Rigidbody2D>().velocity.x < 0)
+        //{
+        //    if (stateInfo.fullPathHash == yoko)
+        //    {
+        //        animator.SetTrigger("usirote_tigau");
+        //    }
+        //    else if (stateInfo.fullPathHash == naname)
+        //    {
+        //        animator.SetTrigger("maete_tigau");
+        //    }
+        //}
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

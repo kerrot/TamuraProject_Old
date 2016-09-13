@@ -112,7 +112,7 @@ public class PlayerControl : MonoBehaviour {
             hitWire = obj;
             Vector2 direction = hitWire.Target.transform.position - transform.position;
             
-            if (rb2d.velocity.x >= 0)
+            if (bodyDirection.transform.localScale.x >= 0)
             {
                 if (obj == wireRight)
                 {
@@ -151,6 +151,10 @@ public class PlayerControl : MonoBehaviour {
         Vector3 tmp = bodyDirection.transform.localScale;
         tmp.x = -tmp.x;
         bodyDirection.transform.localScale = tmp;
+
+        Vector3 tmpPos = wireRight.transform.localPosition;
+        wireRight.transform.localPosition = wireLeft.transform.localPosition;
+        wireLeft.transform.localPosition = tmpPos;
     }
 
     void FixedUpdate()
