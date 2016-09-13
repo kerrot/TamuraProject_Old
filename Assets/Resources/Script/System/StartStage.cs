@@ -8,17 +8,32 @@ public class StartStage : MonoBehaviour {
 	[SerializeField]
 	private float waitTime = 4f;
 
+    private float time;
+
 	void Start()
 	{
         EndingStage.ClearCoin();
         OnceObjectManager.ClearRegister();
         StartCoroutine(OP());
+        time = Time.time;
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    void Update()
+    {
+        if (Time.time - time > waitTime)
+        {
+            Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
+        }
     }
 
 	IEnumerator OP()
 	{
 		yield return new WaitForSeconds(waitTime);
-        while (Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput));
-		SceneManager.LoadScene(sceneName);
+        Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
 	}
 }
