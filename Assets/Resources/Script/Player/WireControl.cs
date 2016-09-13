@@ -31,9 +31,11 @@ public class WireControl : MonoBehaviour {
 
     private bool isGrabbing = false;
 
-    private Animator anim;
-    private Animator fireAnim;
+    //private Animator anim;
+    //private Animator fireAnim;
     private AudioSource se;
+
+    private Camera mainCamera;
 
     void Awake ()
     {
@@ -46,9 +48,11 @@ public class WireControl : MonoBehaviour {
         WireTarget = transform.FindChild("WireTarget").gameObject;
         minHitDistance = player.GetComponent<CircleCollider2D>().radius;
         minHitDistance = (WireMaxLength > minHitDistance) ? minHitDistance : 0;
-        anim = GetComponent<Animator>();
-        fireAnim = HandFront.GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
+        //fireAnim = HandFront.GetComponent<Animator>();
         se = player.GetComponent<AudioSource>();
+
+        mainCamera = GameObject.FindObjectOfType<CameraFollow>().GetComponent<Camera>();
     }
 
     public void ShootWire()
@@ -57,21 +61,21 @@ public class WireControl : MonoBehaviour {
         {
             LineReset();
 
-            Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.gameObject.transform.position.z));
+            Vector2 pos = mainCamera.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
             wireStep = ((Vector3)pos - WireTarget.transform.position).normalized;
             se.Play();
             line.enabled = true;
             Head.SetActive(true);
-            fireAnim.SetTrigger("fire");
+            //fireAnim.SetTrigger("fire");
 
-            if (anim.GetBool("prepare"))
-            {
-                anim.SetBool("prepare", false);
-            }
-            else
-            {
-                anim.SetTrigger("shoot");    
-            }
+            //if (anim.GetBool("prepare"))
+            //{
+            //    anim.SetBool("prepare", false);
+            //}
+            //else
+            //{
+            //    anim.SetTrigger("shoot");    
+            //}
         }
     }
 
@@ -79,7 +83,7 @@ public class WireControl : MonoBehaviour {
     {
         if (CanShoot())
         {
-            anim.SetBool("prepare", true);
+            //anim.SetBool("prepare", true);
         }
     }
 
@@ -142,7 +146,7 @@ public class WireControl : MonoBehaviour {
                     }
                     else if (Vector3.Distance(WireTarget.transform.position, transform.position) >= WireMaxLength)
                     {
-                        anim.SetTrigger("hit");
+                        //anim.SetTrigger("hit");
                         isReached = true;
                     }
                 }
@@ -196,7 +200,7 @@ public class WireControl : MonoBehaviour {
                 HittableObject obj = hit.collider.gameObject.GetComponent<HittableObject>();
                 if (obj != null && obj.IsHitted(this, hit))
                 {
-                    anim.SetTrigger("hit");
+                    //anim.SetTrigger("hit");
                     return true;
                 }
             }

@@ -42,8 +42,10 @@ public class PlayerControl : MonoBehaviour {
     {
         rb2d = GetComponent<Rigidbody2D>();
 
-        wireRight = transform.GetChild(0).GetComponent<WireControl>();
-        wireLeft = transform.GetChild(1).GetComponent<WireControl>();
+        WireControl[] wires = transform.GetComponentsInChildren<WireControl>();
+
+        wireRight = wires[0];
+        wireLeft = wires[1];
 
         anim = GetComponent<Animator>();
 
