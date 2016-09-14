@@ -19,8 +19,6 @@ public class PlayerControl : MonoBehaviour {
     private float speedLimit;
     [SerializeField]
     private bool HitbyMouseDown;
-    [SerializeField]
-    private GameObject bodyDirection;
 
     private Animator anim;
 
@@ -109,52 +107,22 @@ public class PlayerControl : MonoBehaviour {
     {
         if (obj != null)
         {
-            hitWire = obj;
-            Vector2 direction = hitWire.Target.transform.position - transform.position;
-            
-            if (bodyDirection.transform.localScale.x >= 0)
+            if (obj == wireRight)
             {
-                if (obj == wireRight)
-                {
-                    anim.SetTrigger((direction.x >= 0) ? "maete_onaji" : "maete_tigau");
-                }
-                else if (obj == wireLeft)
-                {
-                    anim.SetTrigger((direction.x >= 0) ? "usirote_onaji" : "usirote_tigau");
-                }
+                anim.SetTrigger("RightShoot");
             }
-            else
+            else if (obj == wireLeft)
             {
-                if (obj == wireRight)
-                {
-                    anim.SetTrigger((direction.x >= 0) ? "usirote_tigau" : "usirote_onaji");
-                }
-                else if (obj == wireLeft)
-                {
-                    anim.SetTrigger((direction.x >= 0) ? "maete_tigau" : "maete_onaji");
-                }
+                anim.SetTrigger("LeftShoot");
             }
 
+            hitWire = obj;
+            Vector2 direction = hitWire.Target.transform.position - transform.position;
             rb2d.velocity += direction.normalized * startSpeed;
+            anim.SetFloat("Velocity", direction.x);
             anim.SetBool("Stop", false);
             reached = false;
         }
-    }
-
-    void ReTry()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void DirectionChange()
-    {
-        Vector3 tmp = bodyDirection.transform.localScale;
-        tmp.x = -tmp.x;
-        bodyDirection.transform.localScale = tmp;
-
-        Vector3 tmpPos = wireRight.transform.localPosition;
-        wireRight.transform.localPosition = wireLeft.transform.localPosition;
-        wireLeft.transform.localPosition = tmpPos;
     }
 
     void FixedUpdate()
@@ -241,4 +209,9 @@ public class PlayerControl : MonoBehaviour {
         pos.z = 0;
         revivePos = pos;
 	}
+
+    void ReTry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
