@@ -8,8 +8,6 @@ public class WireControl : MonoBehaviour {
 	[SerializeField]
 	private float WireTime = 1;
     [SerializeField]
-    private GameObject Head;
-    [SerializeField]
     private GameObject HandFront;
 
     public bool IsWiring { get { return line.enabled || isGrabbing; } }
@@ -52,7 +50,10 @@ public class WireControl : MonoBehaviour {
         //fireAnim = HandFront.GetComponent<Animator>();
         se = player.GetComponent<AudioSource>();
 
-        mainCamera = GameObject.FindObjectOfType<CameraFollow>().GetComponent<Camera>();
+        CameraFollow follow = GameObject.FindObjectOfType<CameraFollow>();
+        mainCamera = (follow) ? follow.GetComponent<Camera>() : Camera.main;
+
+        LineReset();
     }
 
     public void ShootWire()
@@ -65,7 +66,6 @@ public class WireControl : MonoBehaviour {
             wireStep = ((Vector3)pos - WireTarget.transform.position).normalized;
             se.Play();
             line.enabled = true;
-            Head.SetActive(true);
             //fireAnim.SetTrigger("fire");
 
             //if (anim.GetBool("prepare"))
@@ -129,7 +129,7 @@ public class WireControl : MonoBehaviour {
                     if (direction.magnitude <= step)
                     {
                         line.enabled = false;
-                        Head.SetActive(false);
+                        LineReset();
                         return;
                     }
                     WireTarget.transform.position -= direction.normalized * step;
@@ -168,8 +168,8 @@ public class WireControl : MonoBehaviour {
 
     void LineReset()
     {
-        WireTarget.transform.parent = null;
-        WireTarget.transform.position = transform.position;
+        WireTarget.transform.parent = transform;
+        WireTarget.transform.position = HandFront.transform.position;
         WireTarget.transform.localScale = new Vector3(1, 1, 1);
         isReached = false;
     }
