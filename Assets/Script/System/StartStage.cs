@@ -27,6 +27,7 @@ public class StartStage : MonoBehaviour {
         if (Time.time - time > waitTime)
         {
             Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
+			time = Time.time;
         }
     }
 }
