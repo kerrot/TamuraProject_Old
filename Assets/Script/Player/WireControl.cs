@@ -151,8 +151,6 @@ public class WireControl : MonoBehaviour {
                     }
                 }
             }
-
-            DrawWire();
         }
 
         if (isGrabbing)
@@ -166,6 +164,11 @@ public class WireControl : MonoBehaviour {
         }
     }
 
+	void LateUpdate()
+	{
+		DrawWire();
+	}
+
     void LineReset()
     {
         WireTarget.transform.parent = transform;
@@ -176,12 +179,17 @@ public class WireControl : MonoBehaviour {
 
     void DrawWire()
     {
+		if (!line.enabled) 
+		{
+			return;
+		}
+
         Vector2 tmp = (Vector2)(WireTarget.transform.position - player.transform.position);
 
         Vector3 startpos = HandFront.transform.position;
-        startpos.z = 0.5f;
+        startpos.z += 0.5f;
         Vector3 endpos = WireTarget.transform.position;
-        endpos.z = 0.5f;
+        endpos.z += 0.5f;
         line.SetPosition(0, startpos);
         line.SetPosition(1, endpos);
         line.material.mainTextureScale = new Vector2(tmp.magnitude, 1);
