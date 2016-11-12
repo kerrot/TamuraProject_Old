@@ -6,8 +6,6 @@ using System.Collections;
 public class MushiHead : MusiControl
 {
     [SerializeField]
-    private PathEditor editor;
-    [SerializeField]
     private float speed;
     [SerializeField]
     private List<MushiBody> bodys = new List<MushiBody>();
@@ -19,20 +17,17 @@ public class MushiHead : MusiControl
     bool isdead = false;
     GameObject lastDestination;
 	BossTraceCheck trace;
+    PathEditor editor;
 
     protected override void Awake()
     {
         base.Awake();
 
-		trace = GameObject.FindObjectOfType<BossTraceCheck> ();
+        editor = GameObject.FindObjectOfType<PathEditor>();
+        trace = GameObject.FindObjectOfType<BossTraceCheck> ();
 
         FindNearestDestination();
         transform.LookAt(destination.transform);
-
-        foreach (var b in bodys)
-        {
-            b.InitDestination(speed);
-        }
     }
 
     void FixedUpdate()
