@@ -14,7 +14,6 @@ public class StartStage : MonoBehaviour {
 	{
         EndingStage.ClearCoin();
         OnceObjectManager.ClearRegister();
-        StartCoroutine(OP());
         time = Time.time;
     }
 
@@ -30,10 +29,4 @@ public class StartStage : MonoBehaviour {
             Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
         }
     }
-
-	IEnumerator OP()
-	{
-		yield return new WaitForSeconds(waitTime);
-        Handheld.PlayFullScreenMovie("op.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
-	}
 }
